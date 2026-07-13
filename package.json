@@ -1,0 +1,13 @@
+{
+  "name": "thai-shipping-pricing",
+  "version": "1.0.0",
+  "description": "ข้อมูลราคาค่าจัดส่งจากบริษัทขนส่งไทย — อัปเดตอัตโนมัติทุกวันด้วย GitHub Actions",
+  "main": "crawler.js",
+  "scripts": {
+    "crawl": "node crawler.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12"
+  }
+}
