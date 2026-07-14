@@ -33,3 +33,13 @@
 | Best Express | ✅ Crawl อัตโนมัติ |
 | Ninja Van | ✅ Crawl อัตโนมัติ |
 | บริการรถเหมาลำ On-Demand | 📝 ข้อมูล manual |
+| Alpha Fast | ✅ Crawl อัตโนมัติ |
+| Grab Express | ✅ Crawl อัตโนมัติ |
+| LINEMAN Delivery | ✅ Crawl อัตโนมัติ |
+| Shopee Xpress (SPX) | ✅ Crawl อัตโนมัติ |
+| Lazada Logistics (LEX) | ✅ Crawl อัตโนมัติ |
+| Deliveree | ✅ Crawl อัตโนมัติ |
+| Lalamove | ✅ Crawl อัตโนมัติ |
+| FedEx Thailand | ✅ Crawl อัตโนมัติ |
+| CJ Logistics | ✅ Crawl อัตโนมัติ |
+| Skootar | ✅ Crawl อัตโนมัติ |
