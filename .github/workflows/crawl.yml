@@ -2,23 +2,36 @@ name: Daily Crawl - อัปเดตราคาค่าจัดส่ง
 
 on:
   schedule:
+    # รันทุกวันเวลา 00:00 น. (UTC) = 07:00 น. ตามเวลาไทย
     - cron: '0 0 * * *'
   workflow_dispatch:
+    # สามารถกดรันด้วยตนเองได้
 
 jobs:
   crawl:
+    name: ดึงข้อมูลราคาจากบริษัทขนส่ง
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
-      - run: npm install
-      - run: node crawler.js
-      - run: |
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run crawler
+        run: node crawler.js
+
+      - name: Commit and push updated pricing data
+        run: |
           git config user.name "crawler-bot"
           git config user.email "crawler-bot@users.noreply.github.com"
           git add data/courier_pricing.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 อัปเดตราคาประจำวัน $(date '+%Y-%m-%d')"
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 อัปเดตราคาค่าจัดส่งประจำวัน $(date '+%Y-%m-%d %H:%M')"
           git push
