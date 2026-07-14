@@ -29,6 +29,8 @@ jobs:
         run: node crawler.js
 
       - name: Commit and push updated pricing data
+        env:
+          TZ: 'Asia/Bangkok' # กำหนดเขตเวลาเป็นประเทศไทย
         run: |
           git config user.name "crawler-bot"
           git config user.email "crawler-bot@users.noreply.github.com"
