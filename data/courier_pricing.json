@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-16T01:40:29.677Z",
+  "lastUpdated": "2026-08-17T01:38:43.471Z",
   "note": "ข้อมูล fallback สำหรับเมื่อระบบ crawl ไม่ทำงาน ควรอัปเดตโดยรัน crawler.js",
   "couriers": [
     {
@@ -27,10 +27,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost — หน้าเว็บ thailandpost.co.th อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost — หน้าเว็บ thailandpost.co.th อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.thailandpost.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:39:33.101Z"
+      "lastFetched": "2026-08-17T01:37:46.737Z"
     },
     {
       "name": "Flash Express & Flash Bulky",
@@ -58,10 +58,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky — หน้าเว็บ flashxpress.co.th อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky — หน้าเว็บ flashxpress.co.th อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.flashexpress.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:39:36.638Z"
+      "lastFetched": "2026-08-17T01:37:50.314Z"
     },
     {
       "name": "J&T Express & J&T Bulky",
@@ -89,10 +89,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express — หน้าเว็บ jtexpress.co.th อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express — หน้าเว็บ jtexpress.co.th อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.jtexpress.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:39:38.268Z"
+      "lastFetched": "2026-08-17T01:37:51.905Z"
     },
     {
       "name": "KEX (Kerry Express)",
@@ -120,10 +120,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.kex.com/th/rate ได้ (16 สิงหาคม 2569 เวลา 01:40) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.kex.com/th/rate ได้ (17 สิงหาคม 2569 เวลา 01:38) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
       "source": "https://www.kex.com/th/rate",
       "fetchStatus": "failed",
-      "lastFetched": "2026-08-16T01:40:08.289Z"
+      "lastFetched": "2026-08-17T01:38:21.925Z"
     },
     {
       "name": "NIM Express",
@@ -213,10 +213,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.dhl.co.th/th/home/rates.html ได้ (16 สิงหาคม 2569 เวลา 01:40) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.dhl.co.th/th/home/rates.html ได้ (17 สิงหาคม 2569 เวลา 01:38) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
       "source": "https://www.dhl.co.th/th/home/rates.html",
       "fetchStatus": "failed",
-      "lastFetched": "2026-08-16T01:40:08.743Z"
+      "lastFetched": "2026-08-17T01:38:22.441Z"
     },
     {
       "name": "SCG Express",
@@ -244,10 +244,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน) — หน้าเว็บ scgexpress.co.th อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน) — หน้าเว็บ scgexpress.co.th อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.scgexpress.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:11.685Z"
+      "lastFetched": "2026-08-17T01:38:25.397Z"
     },
     {
       "name": "Best Express",
@@ -275,10 +275,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.bestexpress.co.th/rate ได้ (16 สิงหาคม 2569 เวลา 01:40) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.bestexpress.co.th/rate ได้ (17 สิงหาคม 2569 เวลา 01:38) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
       "source": "https://www.bestexpress.co.th/rate",
       "fetchStatus": "failed",
-      "lastFetched": "2026-08-16T01:40:12.503Z"
+      "lastFetched": "2026-08-17T01:38:26.496Z"
     },
     {
       "name": "Ninja Van",
@@ -306,10 +306,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.ninjavan.co.th/th/rate ได้ (16 สิงหาคม 2569 เวลา 01:40) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.ninjavan.co.th/th/rate ได้ (17 สิงหาคม 2569 เวลา 01:38) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
       "source": "https://www.ninjavan.co.th/th/rate",
       "fetchStatus": "failed",
-      "lastFetched": "2026-08-16T01:40:13.318Z"
+      "lastFetched": "2026-08-17T01:38:27.369Z"
     },
     {
       "name": "บริการรถเหมาลำ On-Demand",
@@ -369,10 +369,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ Alpha Fast — หน้าเว็บ alphafast.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Alpha Fast — หน้าเว็บ alphafast.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.alphafast.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:13.427Z"
+      "lastFetched": "2026-08-17T01:38:27.480Z"
     },
     {
       "name": "Grab Express",
@@ -400,10 +400,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "ข้อมูลจากอัตราค่าบริการ GrabExpress — หน้าเว็บ grab.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ GrabExpress — หน้าเว็บ grab.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.grab.com/th/express/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:17.121Z"
+      "lastFetched": "2026-08-17T01:38:31.310Z"
     },
     {
       "name": "LINEMAN Delivery",
@@ -431,10 +431,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery — หน้าเว็บ man.linemedia.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery — หน้าเว็บ man.linemedia.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://man.linemedia.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:19.482Z"
+      "lastFetched": "2026-08-17T01:38:34.087Z"
     },
     {
       "name": "Shopee Xpress (SPX)",
@@ -461,10 +461,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ Shopee Xpress (SPX) — หน้าเว็บ spx.co.th อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Shopee Xpress (SPX) — หน้าเว็บ spx.co.th อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://spx.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:20.320Z"
+      "lastFetched": "2026-08-17T01:38:34.972Z"
     },
     {
       "name": "Lazada Logistics (LEX)",
@@ -491,10 +491,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ Lazada Logistics (LEX) — หน้าเว็บ lazada.co.th อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Lazada Logistics (LEX) — หน้าเว็บ lazada.co.th อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.lazada.co.th/logistics/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:22.405Z"
+      "lastFetched": "2026-08-17T01:38:36.621Z"
     },
     {
       "name": "Deliveree",
@@ -524,10 +524,10 @@
       "unsupportedReason": "ไม่รองรับขนาดเล็ก",
       "customPriceText": "เริ่มต้นประมาณ 300 บาท",
       "customWarning": "คิดราคาจริงตามประเภทรถและระยะทาง",
-      "reference": "ข้อมูลจากอัตราค่าบริการ Deliveree — หน้าเว็บ deliveree.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Deliveree — หน้าเว็บ deliveree.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.deliveree.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:25.676Z"
+      "lastFetched": "2026-08-17T01:38:39.033Z"
     },
     {
       "name": "Lalamove",
@@ -555,10 +555,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการ Lalamove — หน้าเว็บ lalamove.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Lalamove — หน้าเว็บ lalamove.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.lalamove.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:27.234Z"
+      "lastFetched": "2026-08-17T01:38:40.066Z"
     },
     {
       "name": "FedEx Thailand",
@@ -585,10 +585,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ FedEx Express ในประเทศ — หน้าเว็บ fedex.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ FedEx Express ในประเทศ — หน้าเว็บ fedex.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.fedex.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:27.489Z"
+      "lastFetched": "2026-08-17T01:38:40.296Z"
     },
     {
       "name": "CJ Logistics",
@@ -615,10 +615,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ CJ Logistics ประเทศไทย — หน้าเว็บ cjlogistics.com อัปเดตล่าสุดเมื่อ 16 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ CJ Logistics ประเทศไทย — หน้าเว็บ cjlogistics.com อัปเดตล่าสุดเมื่อ 17 สิงหาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.cjlogistics.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-08-16T01:40:28.847Z"
+      "lastFetched": "2026-08-17T01:38:42.733Z"
     },
     {
       "name": "Skootar",
@@ -646,10 +646,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.skootar.co.th/rate ได้ (16 สิงหาคม 2569 เวลา 01:40) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.skootar.co.th/rate ได้ (17 สิงหาคม 2569 เวลา 01:38) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
       "source": "https://www.skootar.co.th/rate",
       "fetchStatus": "failed",
-      "lastFetched": "2026-08-16T01:40:29.677Z"
+      "lastFetched": "2026-08-17T01:38:43.471Z"
     }
   ]
 }
