@@ -86,7 +86,7 @@ async function tryFetchUrls(urls, timeout = 10000) {
 
 /**
  * วันที่/เวลาแบบไทย โดยล็อกเขตเวลาเป็น Asia/Bangkok
- * (runner ของ GitHub Actions ใช้ UTC — ถ้าไม่ล็อกจะได้เวลาคลาดไป 7 ชม.)
+ * (runner ของ GitHub Actions ใช้ UTC ถ้าไม่ล็อกเวลาจะช้าไป 7 ชม.)
  */
 function formatThaiDate(date, withTime = false) {
     const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Bangkok' };
@@ -102,7 +102,7 @@ function formatThaiDate(date, withTime = false) {
 // key = ชื่อบริษัทใน courier_pricing_fallback.json
 //
 // หมายเหตุ: crawler ตรวจสอบเพียงว่าหน้าเว็บของบริษัทเข้าถึงได้
-// ราคา (prices) มาจาก courier_pricing_fallback.json เสมอ —
+// ราคา (prices) มาจาก courier_pricing_fallback.json เสมอ
 // เดิมเคยเดาราคาจากตัวเลข "XX บาท" ในหน้าเว็บ แต่ได้ค่าที่ผิด
 // (เช่น Flash Express L = 35 บาท) จึงเลิกใช้ ถ้าต้องการดึงราคาจริง
 // ให้เขียน parser เฉพาะของแต่ละบริษัทแทน
@@ -277,7 +277,7 @@ async function crawlCourier(courier, config) {
         console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
 
         const now = new Date();
-        courier.reference = `${config.description} — ตรวจสอบหน้าเว็บ ${config.site} ล่าสุดเมื่อ ${formatThaiDate(now)} (ราคาอ้างอิงจากข้อมูลที่ผู้ดูแลระบบบันทึกไว้)`;
+        courier.reference = `${config.description} (เช็กเว็บ ${config.site} ล่าสุด ${formatThaiDate(now)}, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)`;
         courier.lastFetched = now.toISOString();
         courier.fetchStatus = 'success';
         return true;
@@ -292,7 +292,7 @@ function markCourierFailed(courier) {
     const now = new Date();
     courier.lastFetched = now.toISOString();
     courier.fetchStatus = 'failed';
-    courier.reference = `⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก ${courier.source} ได้ (${formatThaiDate(now, true)}) — ใช้ข้อมูลล่าสุดที่บันทึกไว้`;
+    courier.reference = `⚠️ เปิดเว็บ ${courier.source} ไม่ได้ (${formatThaiDate(now, true)}) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด`;
 }
 
 // ============================================
@@ -307,7 +307,7 @@ async function runCrawler(forceRefresh = false) {
 
     let pricingData = loadFallbackData();
     if (!pricingData) {
-        console.error('❌ ไม่มี fallback data — ยกเลิกการทำงาน');
+        console.error('❌ ไม่มี fallback data ยกเลิกการทำงาน');
         return null;
     }
 

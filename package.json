@@ -1,12 +1,52 @@
 {
   "name": "thai-shipping-pricing",
   "version": "1.0.0",
-  "description": "ข้อมูลราคาค่าจัดส่งจากบริษัทขนส่งไทย — อัปเดตอัตโนมัติทุกวันด้วย GitHub Actions",
-  "main": "crawler.js",
+  "description": "ราคาค่าส่งพัสดุของบริษัทขนส่งในไทย อัปเดตทุกวัน ใช้ได้ทั้งในโค้ดและ command line",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "bin": {
+    "thai-shipping-pricing": "bin/cli.js"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "bin/cli.js",
+    "data/courier_pricing.json"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
+    "test": "node --test",
     "crawl": "node crawler.js"
   },
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ECq-Studio-s/thai-shipping-pricing.git"
+  },
+  "keywords": [
+    "thailand",
+    "thai",
+    "shipping",
+    "shipping rates",
+    "courier",
+    "parcel",
+    "delivery",
+    "logistics",
+    "kerry",
+    "flash express",
+    "j&t express",
+    "thailand post",
+    "ค่าส่ง",
+    "ขนส่ง"
+  ],
+  "author": "ECq Studio's",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ECq-Studio-s/thai-shipping-pricing/issues"
+  },
+  "homepage": "https://github.com/ECq-Studio-s/thai-shipping-pricing#readme",
+  "devDependencies": {
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12"
   }
