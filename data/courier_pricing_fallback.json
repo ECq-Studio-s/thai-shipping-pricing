@@ -48,8 +48,8 @@
       "remoteSurcharge": { "S": 50, "M": 50, "L": 100, "XL": 200, "XXL": null },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express บนหน้าเว็บ kex.com — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.kex.com/th/rate",
+      "reference": "ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express บนหน้าเว็บ kex-express.com — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "source": "https://th.kex-express.com/th/",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -87,21 +87,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic บนหน้าเว็บ dhl.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.dhl.co.th/th/home/rates.html",
-      "fetchStatus": "pending",
-      "lastFetched": null
-    },
-    {
-      "name": "SCG Express",
-      "icon": "fa-cat",
-      "logoFile": "logo_scg.png",
-      "prices": { "S": 60, "M": 110, "L": null, "XL": null, "XXL": null },
-      "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
-      "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
-      "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน) บนหน้าเว็บ scgexpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.scgexpress.co.th/rate",
+      "reference": "ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic บนหน้าเว็บ dhl.com — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "source": "https://www.dhl.com/th-th/home.html",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -126,8 +113,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย บนหน้าเว็บ ninjavan.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.ninjavan.co.th/th/rate",
+      "reference": "ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย บนหน้าเว็บ ninjavan.co — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "source": "https://www.ninjavan.co/th-th",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -144,18 +131,6 @@
       "reference": "ข้อมูลราคาประมาณขั้นต่ำการเรียกรถผ่าน Deliveree และ Lalamove — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (ราคาเปลี่ยนแปลงตามดีมานด์, ไม่มี rate card ตายตัว)",
       "source": "manual — ประมาณการจากแพลตฟอร์ม Deliveree และ Lalamove",
       "fetchStatus": "manual",
-      "lastFetched": null
-    },
-    {
-      "name": "Alpha Fast",
-      "icon": "fa-gauge-high",
-      "logoFile": "logo_alphafast.png",
-      "prices": { "S": 35, "M": 80, "L": 200, "XL": 380, "XXL": 600 },
-      "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
-      "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลราคาประมาณการขนส่งด่วน Alpha Fast — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.alphafast.com/th/rate",
-      "fetchStatus": "pending",
       "lastFetched": null
     },
     {
@@ -180,7 +155,7 @@
       "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
       "reference": "ข้อมูลราคาประมาณการ LINEMAN MAN Delivery — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://man.linemedia.com/th/rate",
+      "source": "https://lineman.line.me/",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -269,7 +244,7 @@
       "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
       "reference": "ข้อมูลราคาประมาณการ Skootar (รถจักรยานยนต์รับจ้าง) — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.skootar.co.th/rate",
+      "source": "https://www.skootar.com/",
       "fetchStatus": "pending",
       "lastFetched": null
     }

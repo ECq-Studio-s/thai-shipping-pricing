@@ -140,32 +140,20 @@ const COURIER_SOURCES = {
     },
     'KEX (Kerry Express)': {
         label: 'KEX (Kerry Express)',
-        site: 'kex.com',
+        site: 'kex-express.com',
         description: 'ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express',
         urls: [
-            'https://www.kex.com/th/rate',
-            'https://www.kex.com/rate',
-            'https://www.kex.com/'
+            'https://th.kex-express.com/th/',
+            'https://th.kex-express.com/'
         ]
     },
     'DHL Domestic': {
         label: 'DHL Domestic',
-        site: 'dhl.co.th',
+        site: 'dhl.com',
         description: 'ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic',
         urls: [
-            'https://www.dhl.co.th/th/home/rates.html',
-            'https://www.dhl.co.th/th/home.html',
-            'https://www.dhl.co.th/'
-        ]
-    },
-    'SCG Express': {
-        label: 'SCG Express',
-        site: 'scgexpress.co.th',
-        description: 'ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน)',
-        urls: [
-            'https://www.scgexpress.co.th/rate',
-            'https://www.scgexpress.co.th/th/rate',
-            'https://www.scgexpress.co.th/'
+            'https://www.dhl.com/th-th/home.html',
+            'https://www.dhl.com/th-en/home.html'
         ]
     },
     'Best Express': {
@@ -180,22 +168,11 @@ const COURIER_SOURCES = {
     },
     'Ninja Van': {
         label: 'Ninja Van',
-        site: 'ninjavan.co.th',
+        site: 'ninjavan.co',
         description: 'ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย',
         urls: [
-            'https://www.ninjavan.co.th/th/rate',
-            'https://www.ninjavan.co.th/rate',
-            'https://www.ninjavan.co.th/th'
-        ]
-    },
-    'Alpha Fast': {
-        label: 'Alpha Fast',
-        site: 'alphafast.com',
-        description: 'ข้อมูลจากอัตราค่าบริการ Alpha Fast',
-        urls: [
-            'https://www.alphafast.com/th/rate',
-            'https://www.alphafast.com/rate',
-            'https://www.alphafast.com/'
+            'https://www.ninjavan.co/th-th',
+            'https://www.ninjavan.co/en-th'
         ]
     },
     'Grab Express': {
@@ -210,12 +187,11 @@ const COURIER_SOURCES = {
     },
     'LINEMAN Delivery': {
         label: 'LINEMAN Delivery',
-        site: 'man.linemedia.com',
+        site: 'lineman.line.me',
         description: 'ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery',
         urls: [
-            'https://man.linemedia.com/th/rate',
-            'https://man.linemedia.com/rate',
-            'https://man.linemedia.com/'
+            'https://lineman.line.me/',
+            'https://lmwn.com/lineman/'
         ]
     },
     'Shopee Xpress (SPX)': {
@@ -280,12 +256,10 @@ const COURIER_SOURCES = {
     },
     'Skootar': {
         label: 'Skootar',
-        site: 'skootar.co.th',
+        site: 'skootar.com',
         description: 'ข้อมูลจากอัตราค่าบริการ Skootar',
         urls: [
-            'https://www.skootar.co.th/rate',
-            'https://www.skootar.co.th/th/rate',
-            'https://www.skootar.co.th/'
+            'https://www.skootar.com/'
         ]
     }
 };

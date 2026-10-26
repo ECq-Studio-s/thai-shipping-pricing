@@ -120,8 +120,8 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.kex.com/th/rate ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
-      "source": "https://www.kex.com/th/rate",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://th.kex-express.com/th/ ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "source": "https://th.kex-express.com/th/",
       "fetchStatus": "failed",
       "lastFetched": "2026-10-26T15:23:17.533Z"
     },
@@ -213,41 +213,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.dhl.co.th/th/home/rates.html ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
-      "source": "https://www.dhl.co.th/th/home/rates.html",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.dhl.com/th-th/home.html ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "source": "https://www.dhl.com/th-th/home.html",
       "fetchStatus": "failed",
       "lastFetched": "2026-10-26T15:23:18.199Z"
-    },
-    {
-      "name": "SCG Express",
-      "icon": "fa-cat",
-      "logoFile": "logo_scg.png",
-      "prices": {
-        "S": 60,
-        "M": 110,
-        "L": null,
-        "XL": null,
-        "XXL": null
-      },
-      "remoteSurcharge": {
-        "S": 0,
-        "M": 0,
-        "L": 0,
-        "XL": 0,
-        "XXL": 0
-      },
-      "supported": {
-        "S": true,
-        "M": true,
-        "L": false,
-        "XL": false,
-        "XXL": false
-      },
-      "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.scgexpress.co.th/rate ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
-      "source": "https://www.scgexpress.co.th/rate",
-      "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:20.853Z"
     },
     {
       "name": "Best Express",
@@ -306,8 +275,8 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.ninjavan.co.th/th/rate ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
-      "source": "https://www.ninjavan.co.th/th/rate",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.ninjavan.co/th-th ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "source": "https://www.ninjavan.co/th-th",
       "fetchStatus": "failed",
       "lastFetched": "2026-10-26T15:23:22.159Z"
     },
@@ -343,36 +312,6 @@
       "source": "manual — ประมาณการจากแพลตฟอร์ม Deliveree และ Lalamove",
       "fetchStatus": "manual",
       "lastFetched": null
-    },
-    {
-      "name": "Alpha Fast",
-      "icon": "fa-gauge-high",
-      "logoFile": "logo_alphafast.png",
-      "prices": {
-        "S": 35,
-        "M": 80,
-        "L": 200,
-        "XL": 380,
-        "XXL": 600
-      },
-      "remoteSurcharge": {
-        "S": 0,
-        "M": 0,
-        "L": 0,
-        "XL": 0,
-        "XXL": 0
-      },
-      "supported": {
-        "S": true,
-        "M": true,
-        "L": true,
-        "XL": true,
-        "XXL": true
-      },
-      "reference": "ข้อมูลจากอัตราค่าบริการ Alpha Fast — ตรวจสอบหน้าเว็บ alphafast.com ล่าสุดเมื่อ 26 ตุลาคม 2569 (ราคาอ้างอิงจากข้อมูลที่ผู้ดูแลระบบบันทึกไว้)",
-      "source": "https://www.alphafast.com/th/rate",
-      "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:22.362Z"
     },
     {
       "name": "Grab Express",
@@ -431,8 +370,8 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery — ตรวจสอบหน้าเว็บ man.linemedia.com ล่าสุดเมื่อ 26 ตุลาคม 2569 (ราคาอ้างอิงจากข้อมูลที่ผู้ดูแลระบบบันทึกไว้)",
-      "source": "https://man.linemedia.com/th/rate",
+      "reference": "ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery — ตรวจสอบหน้าเว็บ lineman.line.me ล่าสุดเมื่อ 26 ตุลาคม 2569 (ราคาอ้างอิงจากข้อมูลที่ผู้ดูแลระบบบันทึกไว้)",
+      "source": "https://lineman.line.me/",
       "fetchStatus": "success",
       "lastFetched": "2026-10-26T15:23:26.324Z"
     },
@@ -646,8 +585,8 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.skootar.co.th/rate ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
-      "source": "https://www.skootar.co.th/rate",
+      "reference": "⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก https://www.skootar.com/ ได้ (26 ตุลาคม 2569 เวลา 22:23) — ใช้ข้อมูลล่าสุดที่บันทึกไว้",
+      "source": "https://www.skootar.com/",
       "fetchStatus": "failed",
       "lastFetched": "2026-10-26T15:23:40.089Z"
     }
