@@ -6,7 +6,9 @@
   </a>
 </p>
 
-ราคาค่าส่งพัสดุของบริษัทขนส่งในไทย เก็บเป็นไฟล์ JSON และอัปเดตทุกวันด้วย GitHub Actions ใช้ผ่าน npm ได้
+ราคาค่าส่งพัสดุของบริษัทขนส่งในไทยแบบคร่าว ๆ แยกตามขนาดกล่อง S ถึง XXL ใช้เทียบว่าเจ้าไหนถูกกว่า ใช้ผ่าน npm หรือโหลดไฟล์ JSON ไปใช้เองก็ได้
+
+ราคาและเกณฑ์ขนาดทั้งหมดเป็นค่าประมาณ ตัวเลขอาจไม่ตรงกับราคาจริง 100% เพราะแต่ละเจ้าคิดราคาต่างกันทั้งน้ำหนัก ขนาดกล่อง ปลายทาง และโปรโมชัน ก่อนส่งของจริงควรเช็กราคากับบริษัทขนส่งอีกครั้ง
 
 ## ติดตั้ง
 
@@ -98,58 +100,48 @@ await shipping.quote('M', {
 แพ็กเกจโหลด `data/courier_pricing.json` ล่าสุดจาก GitHub ทุกครั้งที่เรียก ราคาจึงตามไฟล์ใน repo โดยไม่ต้องอัปเดตแพ็กเกจ
 ถ้าโหลดไม่ได้ เช่นไม่มีเน็ต จะใช้ไฟล์ที่ติดมากับแพ็กเกจแทน และ `live` เป็น `false`
 
-## ราคามาจากไหน
+## ราคาและขนาดได้มาอย่างไร
 
-ราคาทั้งหมดอยู่ใน `data/courier_pricing_fallback.json` และเรากรอกเอง crawler ไม่ได้อ่านราคาจากเว็บ
-ทุกเช้า GitHub Actions จะรัน `crawler.js` เพื่อเช็กว่าเว็บของแต่ละเจ้ายังเปิดได้ แล้วเขียนผลลง `data/courier_pricing.json` พร้อมสถานะ `fetchStatus` และ `lastFetched`
-หน้าเว็บบน ecq-studio.com โหลดไฟล์นี้จาก `raw.githubusercontent.com`
+ราคาเรากรอกเองจากอัตราที่แต่ละบริษัทประกาศ แล้วจัดเข้าขนาด S ถึง XXL ซึ่งเป็นค่ากลางที่ตั้งขึ้นจากการเทียบเกณฑ์ของหลายเจ้า ไม่ใช่ขนาดของบริษัทใดบริษัทหนึ่ง
+ทุกวันระบบจะเช็กว่าเว็บของแต่ละเจ้ายังเปิดได้ แต่ไม่ได้อ่านราคาจากเว็บ ถ้าบริษัทปรับราคา ตัวเลขที่นี่จะเปลี่ยนตามหลังจากเราแก้ไฟล์เท่านั้น
+ใครเจอราคาที่ไม่ตรง แจ้งได้ที่ [Issues](https://github.com/ECq-Studio-s/thai-shipping-pricing/issues)
 
-cron ตั้งไว้ 00:00 UTC (07:00 น.) แต่ GitHub มักรันช้ากว่านั้นหลายชั่วโมง ปกติไฟล์จะอัปเดตราว 11 โมง
+## บริษัทที่มี
 
-### แก้ราคา
+- ไปรษณีย์ไทย (EMS & Logispost)
+- Flash Express & Flash Bulky
+- J&T Express & J&T Bulky
+- KEX (Kerry Express)
+- NIM Express
+- TP Logistics
+- DHL Domestic
+- Best Express
+- Ninja Van
+- บริการรถเหมาลำ On-Demand
+- Grab Express
+- LINEMAN Delivery
+- Shopee Xpress (SPX)
+- Lazada Logistics (LEX)
+- Deliveree
+- Lalamove
+- FedEx Thailand
+- CJ Logistics
+- Skootar
 
-แก้ `data/courier_pricing_fallback.json` แล้ว commit ราคาใหม่จะเข้า `data/courier_pricing.json` ในรอบ crawl ถัดไป
-ถ้าไม่อยากรอ ให้กด Run workflow ที่ workflow `Daily Crawl` ในแท็บ Actions
+NIM Express, TP Logistics และบริการรถเหมาลำไม่มีตารางราคาบนเว็บ ราคาของสามเจ้านี้หยาบกว่าเจ้าอื่น
 
-### Publish เวอร์ชันใหม่
+## สำหรับผู้ดูแล repo
 
-เพิ่มเลข `version` ใน `package.json` แล้ว push เข้า `main` workflow `publish npm` จะรัน test แล้ว publish ให้
-ถ้าเลขนั้นมีบน npm แล้วก็จะข้ามไป
-ก่อน publish ครั้งแรกต้องตั้ง [Trusted Publishing](https://docs.npmjs.com/trusted-publishers) บน npmjs.com หรือใส่ secret `NPM_TOKEN` ใน repo
+แก้ราคาที่ `data/courier_pricing_fallback.json` แล้ว commit ราคาใหม่จะเข้า `data/courier_pricing.json` ในรอบ crawl ถัดไป ถ้าไม่อยากรอ ให้กด Run workflow ที่ `Daily Crawl` ในแท็บ Actions
+crawl ตั้งไว้ 00:00 UTC (07:00 น.) แต่ GitHub มักรันช้ากว่านั้นหลายชั่วโมง ปกติไฟล์จะอัปเดตราว 11 โมง
 
-## ไฟล์
+ออกเวอร์ชันใหม่บน npm: เพิ่มเลข `version` ใน `package.json` แล้ว push เข้า `main` workflow `publish npm` จะรัน test แล้ว publish ให้ ถ้าเลขนั้นมีบน npm แล้วก็จะข้ามไป
 
 | ไฟล์ | ใช้ทำอะไร |
 |------|---------|
-| `data/courier_pricing_fallback.json` | ราคาที่กรอกเอง แก้ราคาที่ไฟล์นี้ |
-| `data/courier_pricing.json` | ไฟล์ที่ crawler สร้าง หน้าเว็บและแพ็กเกจ npm อ่านไฟล์นี้ |
+| `data/courier_pricing_fallback.json` | ราคาและเกณฑ์ขนาดที่กรอกเอง |
+| `data/courier_pricing.json` | ไฟล์ที่ crawler สร้าง หน้าเว็บ ecq-studio.com และแพ็กเกจ npm อ่านไฟล์นี้ |
 | `crawler.js` | เช็กเว็บของแต่ละเจ้า แล้วสร้าง `courier_pricing.json` |
 | `index.js`, `index.d.ts`, `bin/cli.js` | แพ็กเกจ npm และ command line |
 | `server.js` | server สำหรับรันในเครื่อง มี `GET /api/pricing` กับ `GET /api/status` |
 | `.github/workflows/` | crawl ทุกวัน, test, publish npm |
-
-## บริษัทที่มี
-
-"เช็กเว็บ" คือ crawler เปิดเว็บของเจ้านั้นทุกวัน ส่วน "กรอกเอง" คือไม่มีเว็บให้เช็ก ราคาของทุกเจ้ากรอกเองเหมือนกันหมด
-
-| บริษัท | ข้อมูล |
-|--------|--------|
-| ไปรษณีย์ไทย (EMS & Logispost) | เช็กเว็บ |
-| Flash Express & Flash Bulky | เช็กเว็บ |
-| J&T Express & J&T Bulky | เช็กเว็บ |
-| KEX (Kerry Express) | เช็กเว็บ |
-| NIM Express | กรอกเอง |
-| TP Logistics | กรอกเอง |
-| DHL Domestic | เช็กเว็บ |
-| Best Express | เช็กเว็บ |
-| Ninja Van | เช็กเว็บ |
-| บริการรถเหมาลำ On-Demand | กรอกเอง |
-| Grab Express | เช็กเว็บ |
-| LINEMAN Delivery | เช็กเว็บ |
-| Shopee Xpress (SPX) | เช็กเว็บ |
-| Lazada Logistics (LEX) | เช็กเว็บ |
-| Deliveree | เช็กเว็บ |
-| Lalamove | เช็กเว็บ |
-| FedEx Thailand | เช็กเว็บ |
-| CJ Logistics | เช็กเว็บ |
-| Skootar | เช็กเว็บ |
