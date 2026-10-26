@@ -38,11 +38,9 @@
 | NIM Express | 📝 ข้อมูล manual |
 | TP Logistics | 📝 ข้อมูล manual |
 | DHL Domestic | ✅ Crawl อัตโนมัติ |
-| SCG Express | ✅ Crawl อัตโนมัติ |
 | Best Express | ✅ Crawl อัตโนมัติ |
 | Ninja Van | ✅ Crawl อัตโนมัติ |
 | บริการรถเหมาลำ On-Demand | 📝 ข้อมูล manual |
-| Alpha Fast | ✅ Crawl อัตโนมัติ |
 | Grab Express | ✅ Crawl อัตโนมัติ |
 | LINEMAN Delivery | ✅ Crawl อัตโนมัติ |
 | Shopee Xpress (SPX) | ✅ Crawl อัตโนมัติ |
