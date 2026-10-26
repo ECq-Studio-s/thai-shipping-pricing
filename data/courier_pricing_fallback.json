@@ -9,7 +9,7 @@
       "prices": { "S": 50, "M": 95, "L": 250, "XL": 450, "XXL": 650 },
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost บนหน้าเว็บ thailandpost.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก thailandpost.co.th)",
       "source": "https://www.thailandpost.co.th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -22,7 +22,7 @@
       "remoteSurcharge": { "S": 50, "M": 50, "L": 100, "XL": 200, "XXL": null },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky บนหน้าเว็บ flashexpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก flashexpress.co.th)",
       "source": "https://www.flashexpress.co.th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -35,7 +35,7 @@
       "remoteSurcharge": { "S": 50, "M": 50, "L": 100, "XL": 200, "XXL": null },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express บนหน้าเว็บ jtexpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก jtexpress.co.th)",
       "source": "https://www.jtexpress.co.th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -48,8 +48,8 @@
       "remoteSurcharge": { "S": 50, "M": 50, "L": 100, "XL": 200, "XXL": null },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express บนหน้าเว็บ kex.com — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.kex.com/th/rate",
+      "reference": "ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก kex-express.com)",
+      "source": "https://th.kex-express.com/th/",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -61,8 +61,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": false, "M": true, "L": true, "XL": true, "XXL": true },
       "unsupportedReason": "ไม่รองรับขนาดเล็ก",
-      "reference": "ข้อมูลจากอัตราค่าบริการ NIM Express (ขนส่งสายโลจิสติกส์ชิ้นใหญ่) — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (ไม่สามารถดึงข้อมูลอัตโนมัติ: ไม่มีหน้า rate card สาธารณะ)",
-      "source": "manual — สอบถามจากตัวแทน NIM Express",
+      "reference": "อัตราค่าบริการ NIM Express สำหรับพัสดุชิ้นใหญ่ ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 (NIM ไม่มีตารางราคาบนเว็บ)",
+      "source": "manual: สอบถามจากตัวแทน NIM Express",
       "fetchStatus": "manual",
       "lastFetched": null
     },
@@ -74,8 +74,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": false, "M": true, "L": true, "XL": true, "XXL": true },
       "unsupportedReason": "ไม่รองรับขนาดเล็ก",
-      "reference": "ข้อมูลจากโครงสร้างราคากลางพัสดุภัณฑ์ขนาดใหญ่พิเศษ TP Logistics — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (ไม่สามารถดึงข้อมูลอัตโนมัติ: ไม่มีหน้า rate card สาธารณะ)",
-      "source": "manual — สอบถามจากตัวแทน TP Logistics",
+      "reference": "ราคากลางพัสดุขนาดใหญ่พิเศษของ TP Logistics ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 (TP Logistics ไม่มีตารางราคาบนเว็บ)",
+      "source": "manual: สอบถามจากตัวแทน TP Logistics",
       "fetchStatus": "manual",
       "lastFetched": null
     },
@@ -87,21 +87,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic บนหน้าเว็บ dhl.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.dhl.co.th/th/home/rates.html",
-      "fetchStatus": "pending",
-      "lastFetched": null
-    },
-    {
-      "name": "SCG Express",
-      "icon": "fa-cat",
-      "logoFile": "logo_scg.png",
-      "prices": { "S": 60, "M": 110, "L": null, "XL": null, "XXL": null },
-      "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
-      "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
-      "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน) บนหน้าเว็บ scgexpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.scgexpress.co.th/rate",
+      "reference": "ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก dhl.com)",
+      "source": "https://www.dhl.com/th-th/home.html",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -113,7 +100,7 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากตารางเรทราคาทั่วไปและ Best Big บนหน้าเว็บ bestexpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากตารางเรทราคาทั่วไปและ Best Big (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก bestexpress.co.th)",
       "source": "https://www.bestexpress.co.th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -126,8 +113,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย บนหน้าเว็บ ninjavan.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.ninjavan.co.th/th/rate",
+      "reference": "ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 อ้างอิงจาก ninjavan.co)",
+      "source": "https://www.ninjavan.co/th-th",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -141,21 +128,9 @@
       "unsupportedReason": "ไม่รองรับขนาดเล็ก",
       "customPriceText": "เริ่มต้นประมาณ 1,500 บาท",
       "customWarning": "คิดราคาจริงตามประเภทรถและระยะทาง",
-      "reference": "ข้อมูลราคาประมาณขั้นต่ำการเรียกรถผ่าน Deliveree และ Lalamove — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (ราคาเปลี่ยนแปลงตามดีมานด์, ไม่มี rate card ตายตัว)",
-      "source": "manual — ประมาณการจากแพลตฟอร์ม Deliveree และ Lalamove",
+      "reference": "ราคาเรียกรถขั้นต่ำโดยประมาณจาก Deliveree และ Lalamove ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569 (ราคาขึ้นลงตามดีมานด์ ไม่มีราคาตายตัว)",
+      "source": "manual: ประมาณการจากแพลตฟอร์ม Deliveree และ Lalamove",
       "fetchStatus": "manual",
-      "lastFetched": null
-    },
-    {
-      "name": "Alpha Fast",
-      "icon": "fa-gauge-high",
-      "logoFile": "logo_alphafast.png",
-      "prices": { "S": 35, "M": 80, "L": 200, "XL": 380, "XXL": 600 },
-      "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
-      "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลราคาประมาณการขนส่งด่วน Alpha Fast — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.alphafast.com/th/rate",
-      "fetchStatus": "pending",
       "lastFetched": null
     },
     {
@@ -166,7 +141,7 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "ข้อมูลราคาประมาณการ GrabExpress — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ GrabExpress (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://www.grab.com/th/express/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -179,8 +154,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลราคาประมาณการ LINEMAN MAN Delivery — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://man.linemedia.com/th/rate",
+      "reference": "ข้อมูลราคาประมาณการ LINEMAN MAN Delivery (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
+      "source": "https://lineman.line.me/",
       "fetchStatus": "pending",
       "lastFetched": null
     },
@@ -191,7 +166,7 @@
       "prices": { "S": 30, "M": 70, "L": 200, "XL": 380, "XXL": 600 },
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลราคาประมาณการ Shopee Xpress (SPX) สำหรับผู้ขาย — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ Shopee Xpress (SPX) สำหรับผู้ขาย (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://spx.co.th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -203,7 +178,7 @@
       "prices": { "S": 32, "M": 75, "L": 210, "XL": 390, "XXL": 620 },
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลราคาประมาณการ Lazada Logistics (LEX) สำหรับผู้ขาย — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ Lazada Logistics (LEX) สำหรับผู้ขาย (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://www.lazada.co.th/logistics/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -218,7 +193,7 @@
       "unsupportedReason": "ไม่รองรับขนาดเล็ก",
       "customPriceText": "เริ่มต้นประมาณ 300 บาท",
       "customWarning": "คิดราคาจริงตามประเภทรถและระยะทาง",
-      "reference": "ข้อมูลราคาประมาณการ Deliveree (รถกระบะเหมาคัน) — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ Deliveree (รถกระบะเหมาคัน) (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://www.deliveree.com/th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -231,7 +206,7 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลราคาประมาณการ Lalamove (รถจักรยานยนต์/รถกระบะ) — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ Lalamove (รถจักรยานยนต์/รถกระบะ) (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://www.lalamove.com/th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -243,7 +218,7 @@
       "prices": { "S": 70, "M": 130, "L": 320, "XL": 550, "XXL": 850 },
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลราคาประมาณการ FedEx Express ในประเทศ — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ FedEx Express ในประเทศ (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://www.fedex.com/th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -255,7 +230,7 @@
       "prices": { "S": 55, "M": 100, "L": 250, "XL": 450, "XXL": 700 },
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": true },
-      "reference": "ข้อมูลราคาประมาณการ CJ Logistics ประเทศไทย — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลราคาประมาณการ CJ Logistics ประเทศไทย (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
       "source": "https://www.cjlogistics.com/th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
@@ -268,8 +243,8 @@
       "remoteSurcharge": { "S": 0, "M": 0, "L": 0, "XL": 0, "XXL": 0 },
       "supported": { "S": true, "M": true, "L": false, "XL": false, "XXL": false },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลราคาประมาณการ Skootar (รถจักรยานยนต์รับจ้าง) — เป็นข้อมูลที่ผู้ดูแลระบบบันทึกไว้เมื่อ 14 ก.ค. 2569 (รอระบบดึงข้อมูลอัตโนมัติ)",
-      "source": "https://www.skootar.co.th/rate",
+      "reference": "ข้อมูลราคาประมาณการ Skootar (รถจักรยานยนต์รับจ้าง) (ผู้ดูแลกรอกไว้เมื่อ 14 ก.ค. 2569)",
+      "source": "https://www.skootar.com/",
       "fetchStatus": "pending",
       "lastFetched": null
     }
