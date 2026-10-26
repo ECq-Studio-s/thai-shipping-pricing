@@ -96,7 +96,7 @@ async function main() {
     const size = words.size || (wantsSize ? shipping.sizeOf(words.weightKg || 0, words.dimensionSumCm || 0) : null);
 
     const data = await shipping.getPricing({ offline: values.offline });
-    const updated = `อัปเดตล่าสุด: ${new Date(data.lastUpdated).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}${data.live ? '' : ' (ใช้ข้อมูลในแพ็กเกจ อาจไม่ใช่ล่าสุด)'}`;
+    const updated = `อัปเดตล่าสุด: ${new Date(data.lastUpdated).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}${data.live ? '' : ' (ใช้ข้อมูลในแพ็กเกจ อาจไม่ใช่ล่าสุด)'}\n${data.note || ''}`.trimEnd();
 
     if (findName) {
         const courier = await shipping.find(findName, { data });
