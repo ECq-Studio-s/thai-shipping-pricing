@@ -75,9 +75,9 @@ const [cheapest] = await shipping.quote('S');
 ```sh
 npx thai-shipping-pricing              # ราคาทุกเจ้า
 npx thai-shipping-pricing M            # ขนาด M เรียงจากถูกไปแพง
-npx thai-shipping-pricing M --remote   # บวกค่าพื้นที่ห่างไกล
-npx thai-shipping-pricing -w 3 -d 70   # หนัก 3 กก. กว้าง+ยาว+สูง 70 ซม.
-npx thai-shipping-pricing --find flash
+npx thai-shipping-pricing 3kg 70cm     # หนัก 3 กก. กว้าง+ยาว+สูง 70 ซม. (เว้นวรรคแบบ 3 kg ก็ได้)
+npx thai-shipping-pricing 3kg -r       # บวกค่าพื้นที่ห่างไกล
+npx thai-shipping-pricing kerry        # ราคาของเจ้าเดียว พิมพ์แค่บางส่วนของชื่อก็ได้
 npx thai-shipping-pricing M --json
 ```
 
