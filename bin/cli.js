@@ -4,14 +4,14 @@
 const { parseArgs } = require('node:util');
 const shipping = require('..');
 
-const HELP = `Usage: thai-shipping-pricing [options] [size]
+const HELP = `Usage: thai-shipping-pricing [ขนาด | น้ำหนัก ขนาดกล่อง | ชื่อบริษัท] [options]
 
 Examples:
-  thai-shipping-pricing            ราคาทุกบริษัท ทุกขนาด
-  thai-shipping-pricing M          บริษัทที่ส่งขนาด M ได้ เรียงจากถูกไปแพง
-  thai-shipping-pricing M --remote รวมค่าบริการพื้นที่ห่างไกล
-  thai-shipping-pricing -w 3 -d 70 หนัก 3 กก. กว้าง+ยาว+สูง 70 ซม.
-  thai-shipping-pricing --find flash
+  thai-shipping-pricing              ราคาทุกบริษัท ทุกขนาด
+  thai-shipping-pricing M            บริษัทที่ส่งขนาด M ได้ เรียงจากถูกไปแพง
+  thai-shipping-pricing 3kg 70cm     หนัก 3 กก. กว้าง+ยาว+สูง 70 ซม.
+  thai-shipping-pricing 3kg -r       หนัก 3 กก. ส่งพื้นที่ห่างไกล
+  thai-shipping-pricing kerry        ราคาของบริษัทเดียว
 
 Sizes:
 ${shipping.SIZES.map(size => {
@@ -21,13 +21,38 @@ ${shipping.SIZES.map(size => {
 }).join('\n')}
 
 Options:
-  -w, --weight <kg>  น้ำหนักพัสดุ (กก.) ใช้แทนการระบุขนาด
-  -d, --dim <cm>     ผลรวม กว้าง+ยาว+สูง (ซม.) ใช้คู่กับ --weight
-  -f, --find <name>  แสดงข้อมูลของบริษัทเดียว
-  -r, --remote       รวมค่าบริการพื้นที่ห่างไกล
-  -o, --offline      ใช้ข้อมูลที่แนบมากับแพ็กเกจ ไม่ดึงข้อมูลสด
-  -j, --json         แสดงผลเป็น JSON
-  -h, --help         แสดงวิธีใช้`;
+  -r, --remote   รวมค่าบริการพื้นที่ห่างไกล
+  -o, --offline  ใช้ข้อมูลที่แนบมากับแพ็กเกจ ไม่ดึงข้อมูลสด
+  -j, --json     แสดงผลเป็น JSON
+  -h, --help     แสดงวิธีใช้`;
+
+const WEIGHT = /^(\d+(?:\.\d+)?)(?:kg|กก\.?)?$/i;
+const DIMENSION = /^(\d+(?:\.\d+)?)(?:cm|ซม\.?)$/i;
+
+// อ่านคำที่พิมพ์มา: ขนาด (M), น้ำหนัก (3, 3kg), ขนาดกล่อง (70cm) หรือชื่อบริษัท
+// ไม่ใช้ option แบบมีค่า เช่น --weight 3 เพราะ npx จะเอาไปเป็น option ของ npm เอง
+function readWords(words) {
+    const result = { size: null, weightKg: null, dimensionSumCm: null, name: [] };
+    // รวมตัวเลขกับหน่วยที่พิมพ์แยกกัน เช่น "3 kg 70 cm" เป็น "3kg", "70cm"
+    const joined = [];
+    for (const word of words) {
+        const prev = joined[joined.length - 1];
+        if (prev && /^\d+(\.\d+)?$/.test(prev) && /^(kg|กก\.?|cm|ซม\.?)$/i.test(word)) {
+            joined[joined.length - 1] = prev + word;
+        } else {
+            joined.push(word);
+        }
+    }
+    for (const word of joined) {
+        const upper = word.toUpperCase();
+        let match;
+        if (shipping.SIZES.includes(upper)) result.size = upper;
+        else if ((match = word.match(DIMENSION))) result.dimensionSumCm = Number(match[1]);
+        else if ((match = word.match(WEIGHT))) result.weightKg = Number(match[1]);
+        else result.name.push(word);
+    }
+    return result;
+}
 
 function formatPrice(value) {
     if (typeof value === 'number') return `${value} บาท`;
@@ -41,9 +66,6 @@ async function main() {
         parsed = parseArgs({
             allowPositionals: true,
             options: {
-                find: { type: 'string', short: 'f' },
-                weight: { type: 'string', short: 'w' },
-                dim: { type: 'string', short: 'd' },
                 remote: { type: 'boolean', short: 'r' },
                 offline: { type: 'boolean', short: 'o' },
                 json: { type: 'boolean', short: 'j' },
@@ -59,30 +81,27 @@ async function main() {
         console.log(HELP);
         return 0;
     }
-    if (positionals.length > 1 || (values.dim !== undefined && values.weight === undefined)) {
-        console.error(HELP);
+
+    const words = readWords(positionals);
+    const findName = words.name.join(' ');
+    const wantsSize = words.size || words.weightKg !== null || words.dimensionSumCm !== null;
+    if (findName && wantsSize) {
+        console.error(`ไม่เข้าใจ "${findName}" ใส่ได้อย่างใดอย่างหนึ่ง: ขนาด, น้ำหนัก หรือชื่อบริษัท\n\n${HELP}`);
         return 2;
     }
-    if (values.weight !== undefined) {
-        if (positionals.length) {
-            console.error('ใส่ขนาดหรือ --weight อย่างใดอย่างหนึ่ง');
-            return 2;
-        }
-        try {
-            positionals.push(shipping.sizeOf(Number(values.weight), Number(values.dim || 0)));
-        } catch (err) {
-            console.error('--weight และ --dim ต้องเป็นตัวเลขที่ไม่ติดลบ');
-            return 2;
-        }
+    if (words.size && (words.weightKg !== null || words.dimensionSumCm !== null)) {
+        console.error('ใส่ขนาด (เช่น M) หรือน้ำหนักกับขนาดกล่อง (เช่น 3kg 70cm) อย่างใดอย่างหนึ่ง');
+        return 2;
     }
+    const size = words.size || (wantsSize ? shipping.sizeOf(words.weightKg || 0, words.dimensionSumCm || 0) : null);
 
     const data = await shipping.getPricing({ offline: values.offline });
     const updated = `อัปเดตล่าสุด: ${new Date(data.lastUpdated).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}${data.live ? '' : ' (ใช้ข้อมูลในแพ็กเกจ อาจไม่ใช่ล่าสุด)'}`;
 
-    if (values.find) {
-        const courier = await shipping.find(values.find, { data });
+    if (findName) {
+        const courier = await shipping.find(findName, { data });
         if (!courier) {
-            console.error(`ไม่พบบริษัท "${values.find}"`);
+            console.error(`ไม่พบบริษัท "${findName}"`);
             return 1;
         }
         if (values.json) {
@@ -99,20 +118,12 @@ async function main() {
         return 0;
     }
 
-    if (positionals.length === 1) {
-        let quotes;
-        try {
-            quotes = await shipping.quote(positionals[0], { data, remote: values.remote });
-        } catch (err) {
-            if (!(err instanceof TypeError)) throw err;
-            console.error(err.message);
-            return 2;
-        }
+    if (size) {
+        const quotes = await shipping.quote(size, { data, remote: values.remote });
         if (values.json) {
             console.log(JSON.stringify(quotes, null, 2));
             return 0;
         }
-        const size = quotes.length ? quotes[0].size : positionals[0].toUpperCase();
         console.log(`ขนาด ${size}: ${shipping.SIZE_INFO[size].description}${values.remote ? ' (พื้นที่ห่างไกล)' : ''}\n`);
         for (const q of quotes) {
             const text = q.total === null ? (q.priceText || 'ตามจริง') : `${q.total} บาท`;
