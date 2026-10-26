@@ -1,6 +1,14 @@
 {
   "lastUpdated": "2026-07-14 00:00:00",
   "note": "ข้อมูล fallback สำหรับเมื่อระบบ crawl ไม่ทำงาน ควรอัปเดตโดยรัน crawler.js",
+  "sizeNote": "ขนาดดูจากน้ำหนักและผลรวม กว้าง+ยาว+สูง ถ้าอย่างใดอย่างหนึ่งเกินให้ขยับไปขนาดถัดไป เกณฑ์นี้เป็นค่ากลางที่ได้จากการเทียบเกณฑ์ของ KEX, Flash, J&T, SPX และกล่องไปรษณีย์ไทย",
+  "sizes": {
+    "S": {"maxWeightKg": 2, "maxDimensionSumCm": 60, "description": "ซองหรือกล่องเล็ก ประมาณกล่องไปรษณีย์เบอร์ A ถึง C"},
+    "M": {"maxWeightKg": 10, "maxDimensionSumCm": 90, "description": "กล่องขนาดกลาง ประมาณกล่องไปรษณีย์เบอร์ D ถึง F"},
+    "L": {"maxWeightKg": 20, "maxDimensionSumCm": 120, "description": "กล่องใหญ่ที่ยังส่งเป็นพัสดุปกติได้"},
+    "XL": {"maxWeightKg": 50, "maxDimensionSumCm": 180, "description": "ของหนักหรือกล่องใหญ่มาก บางเจ้าต้องใช้บริการพัสดุใหญ่ (Bulky)"},
+    "XXL": {"maxWeightKg": null, "maxDimensionSumCm": null, "description": "หนักเกิน 50 กก. หรือใหญ่เกิน 180 ซม. ต้องใช้บริการของชิ้นใหญ่หรือเรียกรถ"}
+  },
   "couriers": [
     {
       "name": "ไปรษณีย์ไทย (EMS & Logispost)",
