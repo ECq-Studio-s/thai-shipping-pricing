@@ -85,712 +85,240 @@ async function tryFetchUrls(urls, timeout = 10000) {
 }
 
 /**
- * ลอง extract ราคาจาก HTML โดยค้นหา pattern ราคาทั่วไป
- * @param {string} html - HTML content
- * @param {Object} defaultPrices - ราคา fallback
- * @returns {Object|null} - ราคาที่ extract ได้ หรือ null
+ * วันที่/เวลาแบบไทย โดยล็อกเขตเวลาเป็น Asia/Bangkok
+ * (runner ของ GitHub Actions ใช้ UTC — ถ้าไม่ล็อกจะได้เวลาคลาดไป 7 ชม.)
  */
-function tryExtractPrices(html, defaultPrices) {
-    try {
-        const $ = cheerio.load(html);
-        const text = $.text();
-        const prices = { ...defaultPrices };
-        let found = false;
-
-        // ค้นหา pattern ราคา: "XX บาท" หรือ "฿XX" หรือ "THB XX"
-        const pricePatterns = [
-            /(\d{2,4})\s*บาท/gi,
-            /฿\s*(\d{2,4})/gi,
-            /THB\s*(\d{2,4})/gi,
-            /price[:\s]*(\d{2,4})/gi,
-            /rate[:\s]*(\d{2,4})/gi
-        ];
-
-        const allPrices = [];
-        for (const pattern of pricePatterns) {
-            let match;
-            while ((match = pattern.exec(text)) !== null) {
-                const val = parseInt(match[1]);
-                if (val >= 10 && val <= 5000) {
-                    allPrices.push(val);
-                }
-            }
-        }
-
-        // ถ้าเจอราคาหลายค่า ให้ลอง map ไปยังขนาด S/M/L/XL/XXL
-        if (allPrices.length >= 3) {
-            const sorted = [...new Set(allPrices)].sort((a, b) => a - b);
-            const sizeKeys = ['S', 'M', 'L', 'XL', 'XXL'];
-            for (let i = 0; i < Math.min(sorted.length, 5); i++) {
-                if (prices[sizeKeys[i]] !== null && prices[sizeKeys[i]] !== 'custom') {
-                    prices[sizeKeys[i]] = sorted[i];
-                    found = true;
-                }
-            }
-        }
-
-        return found ? prices : null;
-    } catch (err) {
-        return null;
+function formatThaiDate(date, withTime = false) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Bangkok' };
+    if (withTime) {
+        options.hour = '2-digit';
+        options.minute = '2-digit';
     }
+    return date.toLocaleDateString('th-TH', options);
 }
 
 // ============================================
-// ฟังก์ชัน scrape สำหรับแต่ละบริษัท (Enhanced)
+// ตั้งค่าบริษัทที่ crawl อัตโนมัติ
+// key = ชื่อบริษัทใน courier_pricing_fallback.json
+//
+// หมายเหตุ: crawler ตรวจสอบเพียงว่าหน้าเว็บของบริษัทเข้าถึงได้
+// ราคา (prices) มาจาก courier_pricing_fallback.json เสมอ —
+// เดิมเคยเดาราคาจากตัวเลข "XX บาท" ในหน้าเว็บ แต่ได้ค่าที่ผิด
+// (เช่น Flash Express L = 35 บาท) จึงเลิกใช้ ถ้าต้องการดึงราคาจริง
+// ให้เขียน parser เฉพาะของแต่ละบริษัทแทน
 // ============================================
-
-/**
- * ไปรษณีย์ไทย
- */
-async function crawlThaiPost(courier) {
-    console.log(`   🔍 ไปรษณีย์ไทย`);
-    const urls = [
-        'https://www.thailandpost.co.th/rate',
-        'https://www.thailandpost.co.th/index.php?page=rate',
-        'https://www.thailandpost.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        // ลอง extract ราคา
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost — หน้าเว็บ thailandpost.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
+const COURIER_SOURCES = {
+    'ไปรษณีย์ไทย (EMS & Logispost)': {
+        label: 'ไปรษณีย์ไทย',
+        site: 'thailandpost.co.th',
+        description: 'ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost',
+        urls: [
+            'https://www.thailandpost.co.th/rate',
+            'https://www.thailandpost.co.th/index.php?page=rate',
+            'https://www.thailandpost.co.th/'
+        ]
+    },
+    'Flash Express & Flash Bulky': {
+        label: 'Flash Express',
+        site: 'flashexpress.co.th',
+        description: 'ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky',
+        urls: [
+            'https://www.flashexpress.co.th/rate',
+            'https://www.flashexpress.co.th/th/rate',
+            'https://www.flashexpress.co.th/'
+        ]
+    },
+    'J&T Express & J&T Bulky': {
+        label: 'J&T Express',
+        site: 'jtexpress.co.th',
+        description: 'ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express',
+        urls: [
+            'https://www.jtexpress.co.th/rate',
+            'https://www.jtexpress.co.th/th/rate',
+            'https://www.jtexpress.co.th/'
+        ]
+    },
+    'KEX (Kerry Express)': {
+        label: 'KEX (Kerry Express)',
+        site: 'kex.com',
+        description: 'ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express',
+        urls: [
+            'https://www.kex.com/th/rate',
+            'https://www.kex.com/rate',
+            'https://www.kex.com/'
+        ]
+    },
+    'DHL Domestic': {
+        label: 'DHL Domestic',
+        site: 'dhl.co.th',
+        description: 'ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic',
+        urls: [
+            'https://www.dhl.co.th/th/home/rates.html',
+            'https://www.dhl.co.th/th/home.html',
+            'https://www.dhl.co.th/'
+        ]
+    },
+    'SCG Express': {
+        label: 'SCG Express',
+        site: 'scgexpress.co.th',
+        description: 'ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน)',
+        urls: [
+            'https://www.scgexpress.co.th/rate',
+            'https://www.scgexpress.co.th/th/rate',
+            'https://www.scgexpress.co.th/'
+        ]
+    },
+    'Best Express': {
+        label: 'Best Express',
+        site: 'bestexpress.co.th',
+        description: 'ข้อมูลจากตารางเรทราคาทั่วไปและ Best Big',
+        urls: [
+            'https://www.bestexpress.co.th/rate',
+            'https://www.bestexpress.co.th/th/rate',
+            'https://www.bestexpress.co.th/'
+        ]
+    },
+    'Ninja Van': {
+        label: 'Ninja Van',
+        site: 'ninjavan.co.th',
+        description: 'ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย',
+        urls: [
+            'https://www.ninjavan.co.th/th/rate',
+            'https://www.ninjavan.co.th/rate',
+            'https://www.ninjavan.co.th/th'
+        ]
+    },
+    'Alpha Fast': {
+        label: 'Alpha Fast',
+        site: 'alphafast.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ Alpha Fast',
+        urls: [
+            'https://www.alphafast.com/th/rate',
+            'https://www.alphafast.com/rate',
+            'https://www.alphafast.com/'
+        ]
+    },
+    'Grab Express': {
+        label: 'Grab Express',
+        site: 'grab.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ GrabExpress',
+        urls: [
+            'https://www.grab.com/th/express/rate',
+            'https://www.grab.com/th/express',
+            'https://www.grab.com/th/'
+        ]
+    },
+    'LINEMAN Delivery': {
+        label: 'LINEMAN Delivery',
+        site: 'man.linemedia.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery',
+        urls: [
+            'https://man.linemedia.com/th/rate',
+            'https://man.linemedia.com/rate',
+            'https://man.linemedia.com/'
+        ]
+    },
+    'Shopee Xpress (SPX)': {
+        label: 'Shopee Xpress (SPX)',
+        site: 'spx.co.th',
+        description: 'ข้อมูลจากอัตราค่าบริการ Shopee Xpress (SPX)',
+        urls: [
+            'https://spx.co.th/rate',
+            'https://spx.co.th/th/rate',
+            'https://spx.co.th/'
+        ]
+    },
+    'Lazada Logistics (LEX)': {
+        label: 'Lazada Logistics (LEX)',
+        site: 'lazada.co.th',
+        description: 'ข้อมูลจากอัตราค่าบริการ Lazada Logistics (LEX)',
+        urls: [
+            'https://www.lazada.co.th/logistics/rate',
+            'https://www.lazada.co.th/logistics',
+            'https://www.lazada.co.th/'
+        ]
+    },
+    'Deliveree': {
+        label: 'Deliveree',
+        site: 'deliveree.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ Deliveree',
+        urls: [
+            'https://www.deliveree.com/th/rate',
+            'https://www.deliveree.com/rate',
+            'https://www.deliveree.com/'
+        ]
+    },
+    'Lalamove': {
+        label: 'Lalamove',
+        site: 'lalamove.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ Lalamove',
+        urls: [
+            'https://www.lalamove.com/th/rate',
+            'https://www.lalamove.com/rate',
+            'https://www.lalamove.com/'
+        ]
+    },
+    'FedEx Thailand': {
+        label: 'FedEx Thailand',
+        site: 'fedex.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ FedEx Express ในประเทศ',
+        urls: [
+            'https://www.fedex.com/th/rate',
+            'https://www.fedex.com/th/home.html',
+            'https://www.fedex.com/'
+        ]
+    },
+    'CJ Logistics': {
+        label: 'CJ Logistics',
+        site: 'cjlogistics.com',
+        description: 'ข้อมูลจากอัตราค่าบริการ CJ Logistics ประเทศไทย',
+        urls: [
+            'https://www.cjlogistics.com/th/rate',
+            'https://www.cjlogistics.com/rate',
+            'https://www.cjlogistics.com/'
+        ]
+    },
+    'Skootar': {
+        label: 'Skootar',
+        site: 'skootar.co.th',
+        description: 'ข้อมูลจากอัตราค่าบริการ Skootar',
+        urls: [
+            'https://www.skootar.co.th/rate',
+            'https://www.skootar.co.th/th/rate',
+            'https://www.skootar.co.th/'
+        ]
     }
-}
-
-/**
- * Flash Express
- */
-async function crawlFlashExpress(courier) {
-    console.log(`   🔍 Flash Express`);
-    const urls = [
-        'https://www.flashexpress.co.th/rate',
-        'https://www.flashexpress.co.th/th/rate',
-        'https://www.flashexpress.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky — หน้าเว็บ flashxpress.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * J&T Express
- */
-async function crawlJNT(courier) {
-    console.log(`   🔍 J&T Express`);
-    const urls = [
-        'https://www.jtexpress.co.th/rate',
-        'https://www.jtexpress.co.th/th/rate',
-        'https://www.jtexpress.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express — หน้าเว็บ jtexpress.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * KEX (Kerry Express)
- */
-async function crawlKEX(courier) {
-    console.log(`   🔍 KEX (Kerry Express)`);
-    const urls = [
-        'https://www.kex.com/th/rate',
-        'https://www.kex.com/rate',
-        'https://www.kex.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express — หน้าเว็บ kex.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * DHL Domestic
- */
-async function crawlDHL(courier) {
-    console.log(`   🔍 DHL Domestic`);
-    const urls = [
-        'https://www.dhl.co.th/th/home/rates.html',
-        'https://www.dhl.co.th/th/home.html',
-        'https://www.dhl.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic — หน้าเว็บ dhl.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * SCG Express
- */
-async function crawlSCG(courier) {
-    console.log(`   🔍 SCG Express`);
-    const urls = [
-        'https://www.scgexpress.co.th/rate',
-        'https://www.scgexpress.co.th/th/rate',
-        'https://www.scgexpress.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน) — หน้าเว็บ scgexpress.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Best Express
- */
-async function crawlBestExpress(courier) {
-    console.log(`   🔍 Best Express`);
-    const urls = [
-        'https://www.bestexpress.co.th/rate',
-        'https://www.bestexpress.co.th/th/rate',
-        'https://www.bestexpress.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากตารางเรทราคาทั่วไปและ Best Big — หน้าเว็บ bestexpress.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Ninja Van
- */
-async function crawlNinjaVan(courier) {
-    console.log(`   🔍 Ninja Van`);
-    const urls = [
-        'https://www.ninjavan.co.th/th/rate',
-        'https://www.ninjavan.co.th/rate',
-        'https://www.ninjavan.co.th/th'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย — หน้าเว็บ ninjavan.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Alpha Fast
- */
-async function crawlAlphaFast(courier) {
-    console.log(`   🔍 Alpha Fast`);
-    const urls = [
-        'https://www.alphafast.com/th/rate',
-        'https://www.alphafast.com/rate',
-        'https://www.alphafast.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ Alpha Fast — หน้าเว็บ alphafast.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Grab Express
- */
-async function crawlGrabExpress(courier) {
-    console.log(`   🔍 Grab Express`);
-    const urls = [
-        'https://www.grab.com/th/express/rate',
-        'https://www.grab.com/th/express',
-        'https://www.grab.com/th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ GrabExpress — หน้าเว็บ grab.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * LINEMAN Delivery
- */
-async function crawlLINEMAN(courier) {
-    console.log(`   🔍 LINEMAN Delivery`);
-    const urls = [
-        'https://man.linemedia.com/th/rate',
-        'https://man.linemedia.com/rate',
-        'https://man.linemedia.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery — หน้าเว็บ man.linemedia.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Shopee Xpress (SPX)
- */
-async function crawlSPX(courier) {
-    console.log(`   🔍 Shopee Xpress (SPX)`);
-    const urls = [
-        'https://spx.co.th/rate',
-        'https://spx.co.th/th/rate',
-        'https://spx.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ Shopee Xpress (SPX) — หน้าเว็บ spx.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Lazada Logistics (LEX)
- */
-async function crawlLEX(courier) {
-    console.log(`   🔍 Lazada Logistics (LEX)`);
-    const urls = [
-        'https://www.lazada.co.th/logistics/rate',
-        'https://www.lazada.co.th/logistics',
-        'https://www.lazada.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ Lazada Logistics (LEX) — หน้าเว็บ lazada.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Deliveree
- */
-async function crawlDeliveree(courier) {
-    console.log(`   🔍 Deliveree`);
-    const urls = [
-        'https://www.deliveree.com/th/rate',
-        'https://www.deliveree.com/rate',
-        'https://www.deliveree.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ Deliveree — หน้าเว็บ deliveree.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Lalamove
- */
-async function crawlLalamove(courier) {
-    console.log(`   🔍 Lalamove`);
-    const urls = [
-        'https://www.lalamove.com/th/rate',
-        'https://www.lalamove.com/rate',
-        'https://www.lalamove.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ Lalamove — หน้าเว็บ lalamove.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * FedEx Thailand
- */
-async function crawlFedEx(courier) {
-    console.log(`   🔍 FedEx Thailand`);
-    const urls = [
-        'https://www.fedex.com/th/rate',
-        'https://www.fedex.com/th/home.html',
-        'https://www.fedex.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ FedEx Express ในประเทศ — หน้าเว็บ fedex.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * CJ Logistics
- */
-async function crawlCJLogistics(courier) {
-    console.log(`   🔍 CJ Logistics`);
-    const urls = [
-        'https://www.cjlogistics.com/th/rate',
-        'https://www.cjlogistics.com/rate',
-        'https://www.cjlogistics.com/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ CJ Logistics ประเทศไทย — หน้าเว็บ cjlogistics.com อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
-
-/**
- * Skootar
- */
-async function crawlSkootar(courier) {
-    console.log(`   🔍 Skootar`);
-    const urls = [
-        'https://www.skootar.co.th/rate',
-        'https://www.skootar.co.th/th/rate',
-        'https://www.skootar.co.th/'
-    ];
-    const result = await tryFetchUrls(urls);
-    if (result.success) {
-        const $ = cheerio.load(result.html);
-        const pageTitle = $('title').text().trim();
-        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
-        
-        const extracted = tryExtractPrices(result.html, courier.prices);
-        if (extracted) {
-            courier.prices = extracted;
-            console.log(`   💰 พบข้อมูลราคาจากหน้าเว็บ`);
-        }
-
-        const now = new Date();
-        const thaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        courier.reference = `ข้อมูลจากอัตราค่าบริการ Skootar — หน้าเว็บ skootar.co.th อัปเดตล่าสุดเมื่อ ${thaiDate} (ระบบดึงข้อมูลอัตโนมัติ)`;
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-        return true;
-    } else {
-        console.log(`   ❌ ${result.error}`);
-        updateCourierReference(courier, false);
-        return false;
-    }
-}
+};
 
 // ============================================
-// ฟังก์ชันอัปเดต reference
+// ฟังก์ชัน crawl (ใช้ร่วมกันทุกบริษัท)
 // ============================================
 
-function updateCourierReference(courier, success, fetchedHtml = null) {
+async function crawlCourier(courier, config) {
+    console.log(`   🔍 ${config.label}`);
+    const result = await tryFetchUrls(config.urls);
+    if (result.success) {
+        const $ = cheerio.load(result.html);
+        const pageTitle = $('title').text().trim();
+        console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
+
+        const now = new Date();
+        courier.reference = `${config.description} — ตรวจสอบหน้าเว็บ ${config.site} ล่าสุดเมื่อ ${formatThaiDate(now)} (ราคาอ้างอิงจากข้อมูลที่ผู้ดูแลระบบบันทึกไว้)`;
+        courier.lastFetched = now.toISOString();
+        courier.fetchStatus = 'success';
+        return true;
+    } else {
+        console.log(`   ❌ ${result.error}`);
+        markCourierFailed(courier);
+        return false;
+    }
+}
+
+function markCourierFailed(courier) {
     const now = new Date();
-    const thaiDate = now.toLocaleDateString('th-TH', {
-        year: 'numeric', month: 'long', day: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    });
-    
-    if (success) {
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'success';
-    } else {
-        courier.lastFetched = now.toISOString();
-        courier.fetchStatus = 'failed';
-        if (courier.fetchStatus === 'failed') {
-            courier.reference = `⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก ${courier.source} ได้ (${thaiDate}) — ใช้ข้อมูลล่าสุดที่บันทึกไว้`;
-        }
-    }
+    courier.lastFetched = now.toISOString();
+    courier.fetchStatus = 'failed';
+    courier.reference = `⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก ${courier.source} ได้ (${formatThaiDate(now, true)}) — ใช้ข้อมูลล่าสุดที่บันทึกไว้`;
 }
 
 // ============================================
@@ -800,7 +328,7 @@ function updateCourierReference(courier, success, fetchedHtml = null) {
 async function runCrawler(forceRefresh = false) {
     console.log('============================================');
     console.log('🕷️ เริ่มต้นดึงข้อมูลราคาจากบริษัทขนส่ง');
-    console.log(`📅 เวลา: ${new Date().toLocaleString('th-TH')}`);
+    console.log(`📅 เวลา: ${new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}`);
     console.log('============================================\n');
 
     let pricingData = loadFallbackData();
@@ -823,37 +351,16 @@ async function runCrawler(forceRefresh = false) {
         }
     }
 
-    // แมปชื่อบริษัทกับฟังก์ชัน crawl (รวมบริษัทใหม่)
-    const crawlerMap = {
-        'ไปรษณีย์ไทย (EMS & Logispost)': crawlThaiPost,
-        'Flash Express & Flash Bulky': crawlFlashExpress,
-        'J&T Express & J&T Bulky': crawlJNT,
-        'KEX (Kerry Express)': crawlKEX,
-        'DHL Domestic': crawlDHL,
-        'SCG Express': crawlSCG,
-        'Best Express': crawlBestExpress,
-        'Ninja Van': crawlNinjaVan,
-        'Alpha Fast': crawlAlphaFast,
-        'Grab Express': crawlGrabExpress,
-        'LINEMAN Delivery': crawlLINEMAN,
-        'Shopee Xpress (SPX)': crawlSPX,
-        'Lazada Logistics (LEX)': crawlLEX,
-        'Deliveree': crawlDeliveree,
-        'Lalamove': crawlLalamove,
-        'FedEx Thailand': crawlFedEx,
-        'CJ Logistics': crawlCJLogistics,
-        'Skootar': crawlSkootar
-    };
 
     let successCount = 0;
     let failCount = 0;
 
     for (const courier of pricingData.couriers) {
-        const crawlerFn = crawlerMap[courier.name];
+        const config = COURIER_SOURCES[courier.name];
 
-        if (crawlerFn) {
+        if (config) {
             console.log(`➡️ ${courier.name}:`);
-            const success = await crawlerFn(courier);
+            const success = await crawlCourier(courier, config);
             if (success) successCount++;
             else failCount++;
         } else {
@@ -894,4 +401,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { runCrawler };
+module.exports = { runCrawler };
