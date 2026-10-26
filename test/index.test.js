@@ -168,3 +168,21 @@ test('current data has the same couriers as the fallback', () => {
     const current = require('../data/courier_pricing.json');
     assert.deepEqual(current.couriers.map(c => c.name), fallback.couriers.map(c => c.name));
 });
+
+// CLI รับคำธรรมดา (ไม่ใช้ --weight 3) เพราะ npx เอา option แบบมีค่าไปเป็นของ npm เอง
+const { execFileSync } = require('node:child_process');
+const path = require('node:path');
+const cli = (...args) => execFileSync(process.execPath, [path.join(__dirname, '..', 'bin', 'cli.js'), ...args, '--offline'], { encoding: 'utf8' });
+
+test('cli reads size, weight, box size and courier name from plain words', () => {
+    assert.match(cli('M'), /^ขนาด M:/);
+    assert.match(cli('1kg'), /^ขนาด S:/);
+    assert.match(cli('15', 'kg', '70', 'cm'), /^ขนาด L:/);
+    assert.match(cli('1kg', '100cm'), /^ขนาด L:/);
+    assert.match(cli('60kg'), /^ขนาด XXL:/);
+    assert.match(cli('kerry'), /^KEX \(Kerry Express\)/);
+});
+
+test('cli rejects mixing a size with a courier name', () => {
+    assert.throws(() => cli('M', 'kerry'), (err) => err.status === 2);
+});
