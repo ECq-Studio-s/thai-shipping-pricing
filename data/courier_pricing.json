@@ -37,10 +37,10 @@
       "icon": "fa-bolt",
       "logoFile": "logo_flashexpress.png",
       "prices": {
-        "S": 25,
-        "M": 30,
-        "L": 35,
-        "XL": 50,
+        "S": 35,
+        "M": 80,
+        "L": 220,
+        "XL": 400,
         "XXL": null
       },
       "remoteSurcharge": {
@@ -58,7 +58,7 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky — หน้าเว็บ flashxpress.co.th อัปเดตล่าสุดเมื่อ 26 ตุลาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky — หน้าเว็บ flashexpress.co.th อัปเดตล่าสุดเมื่อ 26 ตุลาคม 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.flashexpress.co.th/rate",
       "fetchStatus": "success",
       "lastFetched": "2026-10-26T04:06:32.011Z"

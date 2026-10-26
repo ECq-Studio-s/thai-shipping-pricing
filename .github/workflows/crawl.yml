@@ -7,6 +7,13 @@ on:
   workflow_dispatch:
     # สามารถกดรันด้วยตนเองได้
 
+permissions:
+  contents: write # ต้องใช้เพื่อ push ไฟล์ข้อมูลที่อัปเดตกลับเข้า repo
+
+concurrency:
+  group: daily-crawl
+  cancel-in-progress: false
+
 jobs:
   crawl:
     name: ดึงข้อมูลราคาจากบริษัทขนส่ง
@@ -23,9 +30,11 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run crawler
+        env:
+          TZ: 'Asia/Bangkok'
         run: node crawler.js
 
       - name: Commit and push updated pricing data
