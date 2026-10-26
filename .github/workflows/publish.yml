@@ -1,0 +1,63 @@
+name: "🚀 publish npm"
+
+on:
+  # push เข้า main แล้ว publish ให้เลย ถ้าเลข version ใน package.json ยังไม่มีบน npm
+  push:
+    branches: [main]
+    paths:
+      - 'index.js'
+      - 'index.d.ts'
+      - 'bin/**'
+      - 'package.json'
+      - 'README.md'
+  release:
+    types: [created]
+  # กด publish เองได้จากแท็บ Actions
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # ใช้กับ npm Trusted Publishing (ตั้งค่าบน npmjs.com แล้วไม่ต้องใช้ token)
+  id-token: write
+
+concurrency:
+  group: publish-npm
+  cancel-in-progress: false
+
+jobs:
+  publish-npm:
+    name: "🚀 publish"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚 checkout
+        uses: actions/checkout@v5
+
+      - name: 🟢 node
+        uses: actions/setup-node@v5
+        with:
+          # Node 24 มาพร้อม npm 11 ซึ่งรองรับ Trusted Publishing
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+
+      - name: 🧪 test
+        run: npm test
+
+      - name: 🔎 check version
+        id: version
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION มีบน npm แล้ว ข้าม (ถ้าจะ publish ให้เพิ่ม version ใน package.json)"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "จะ publish $NAME@$VERSION"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 🚀 publish
+        if: steps.version.outputs.publish == 'true'
+        run: npm publish --access public
+        env:
+          # ใช้เฉพาะเมื่อยังไม่ได้ตั้ง Trusted Publishing
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
