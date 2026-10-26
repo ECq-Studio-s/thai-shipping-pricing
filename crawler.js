@@ -86,7 +86,7 @@ async function tryFetchUrls(urls, timeout = 10000) {
 
 /**
  * วันที่/เวลาแบบไทย โดยล็อกเขตเวลาเป็น Asia/Bangkok
- * (runner ของ GitHub Actions ใช้ UTC — ถ้าไม่ล็อกจะได้เวลาคลาดไป 7 ชม.)
+ * (runner ของ GitHub Actions ใช้ UTC ถ้าไม่ล็อกเวลาจะช้าไป 7 ชม.)
  */
 function formatThaiDate(date, withTime = false) {
     const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Bangkok' };
@@ -102,7 +102,7 @@ function formatThaiDate(date, withTime = false) {
 // key = ชื่อบริษัทใน courier_pricing_fallback.json
 //
 // หมายเหตุ: crawler ตรวจสอบเพียงว่าหน้าเว็บของบริษัทเข้าถึงได้
-// ราคา (prices) มาจาก courier_pricing_fallback.json เสมอ —
+// ราคา (prices) มาจาก courier_pricing_fallback.json เสมอ
 // เดิมเคยเดาราคาจากตัวเลข "XX บาท" ในหน้าเว็บ แต่ได้ค่าที่ผิด
 // (เช่น Flash Express L = 35 บาท) จึงเลิกใช้ ถ้าต้องการดึงราคาจริง
 // ให้เขียน parser เฉพาะของแต่ละบริษัทแทน
@@ -140,32 +140,20 @@ const COURIER_SOURCES = {
     },
     'KEX (Kerry Express)': {
         label: 'KEX (Kerry Express)',
-        site: 'kex.com',
+        site: 'kex-express.com',
         description: 'ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express',
         urls: [
-            'https://www.kex.com/th/rate',
-            'https://www.kex.com/rate',
-            'https://www.kex.com/'
+            'https://th.kex-express.com/th/',
+            'https://th.kex-express.com/'
         ]
     },
     'DHL Domestic': {
         label: 'DHL Domestic',
-        site: 'dhl.co.th',
+        site: 'dhl.com',
         description: 'ข้อมูลจากเรทราคามาตรฐาน DHL Express Domestic',
         urls: [
-            'https://www.dhl.co.th/th/home/rates.html',
-            'https://www.dhl.co.th/th/home.html',
-            'https://www.dhl.co.th/'
-        ]
-    },
-    'SCG Express': {
-        label: 'SCG Express',
-        site: 'scgexpress.co.th',
-        description: 'ข้อมูลจากอัตราค่าจัดส่งพัสดุ (แมวดำส่งด่วน)',
-        urls: [
-            'https://www.scgexpress.co.th/rate',
-            'https://www.scgexpress.co.th/th/rate',
-            'https://www.scgexpress.co.th/'
+            'https://www.dhl.com/th-th/home.html',
+            'https://www.dhl.com/th-en/home.html'
         ]
     },
     'Best Express': {
@@ -180,22 +168,11 @@ const COURIER_SOURCES = {
     },
     'Ninja Van': {
         label: 'Ninja Van',
-        site: 'ninjavan.co.th',
+        site: 'ninjavan.co',
         description: 'ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย',
         urls: [
-            'https://www.ninjavan.co.th/th/rate',
-            'https://www.ninjavan.co.th/rate',
-            'https://www.ninjavan.co.th/th'
-        ]
-    },
-    'Alpha Fast': {
-        label: 'Alpha Fast',
-        site: 'alphafast.com',
-        description: 'ข้อมูลจากอัตราค่าบริการ Alpha Fast',
-        urls: [
-            'https://www.alphafast.com/th/rate',
-            'https://www.alphafast.com/rate',
-            'https://www.alphafast.com/'
+            'https://www.ninjavan.co/th-th',
+            'https://www.ninjavan.co/en-th'
         ]
     },
     'Grab Express': {
@@ -210,12 +187,11 @@ const COURIER_SOURCES = {
     },
     'LINEMAN Delivery': {
         label: 'LINEMAN Delivery',
-        site: 'man.linemedia.com',
+        site: 'lineman.line.me',
         description: 'ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery',
         urls: [
-            'https://man.linemedia.com/th/rate',
-            'https://man.linemedia.com/rate',
-            'https://man.linemedia.com/'
+            'https://lineman.line.me/',
+            'https://lmwn.com/lineman/'
         ]
     },
     'Shopee Xpress (SPX)': {
@@ -280,12 +256,10 @@ const COURIER_SOURCES = {
     },
     'Skootar': {
         label: 'Skootar',
-        site: 'skootar.co.th',
+        site: 'skootar.com',
         description: 'ข้อมูลจากอัตราค่าบริการ Skootar',
         urls: [
-            'https://www.skootar.co.th/rate',
-            'https://www.skootar.co.th/th/rate',
-            'https://www.skootar.co.th/'
+            'https://www.skootar.com/'
         ]
     }
 };
@@ -303,7 +277,7 @@ async function crawlCourier(courier, config) {
         console.log(`   📄 โหลดสำเร็จ: ${result.url} (${pageTitle ? pageTitle.substring(0, 50) : 'OK'})`);
 
         const now = new Date();
-        courier.reference = `${config.description} — ตรวจสอบหน้าเว็บ ${config.site} ล่าสุดเมื่อ ${formatThaiDate(now)} (ราคาอ้างอิงจากข้อมูลที่ผู้ดูแลระบบบันทึกไว้)`;
+        courier.reference = `${config.description} (เช็กเว็บ ${config.site} ล่าสุด ${formatThaiDate(now)}, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)`;
         courier.lastFetched = now.toISOString();
         courier.fetchStatus = 'success';
         return true;
@@ -318,7 +292,7 @@ function markCourierFailed(courier) {
     const now = new Date();
     courier.lastFetched = now.toISOString();
     courier.fetchStatus = 'failed';
-    courier.reference = `⚠️ ไม่สามารถดึงข้อมูลอัตโนมัติจาก ${courier.source} ได้ (${formatThaiDate(now, true)}) — ใช้ข้อมูลล่าสุดที่บันทึกไว้`;
+    courier.reference = `⚠️ เปิดเว็บ ${courier.source} ไม่ได้ (${formatThaiDate(now, true)}) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด`;
 }
 
 // ============================================
@@ -333,7 +307,7 @@ async function runCrawler(forceRefresh = false) {
 
     let pricingData = loadFallbackData();
     if (!pricingData) {
-        console.error('❌ ไม่มี fallback data — ยกเลิกการทำงาน');
+        console.error('❌ ไม่มี fallback data ยกเลิกการทำงาน');
         return null;
     }
 
