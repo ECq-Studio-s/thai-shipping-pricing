@@ -1,6 +1,6 @@
 {
   "name": "thai-shipping-pricing",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ราคาค่าส่งพัสดุของบริษัทขนส่งในไทย อัปเดตทุกวัน ใช้ได้ทั้งในโค้ดและ command line",
   "main": "index.js",
   "types": "index.d.ts",
