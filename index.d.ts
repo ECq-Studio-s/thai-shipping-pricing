@@ -34,6 +34,7 @@ declare namespace getPricing {
     interface PricingData {
         /** ISO 8601 */
         lastUpdated: string;
+        /** ข้อความแจ้งว่าราคาและขนาดเป็นค่าประมาณ */
         note?: string;
         sizeNote?: string;
         sizes?: SizeMap<SizeInfo>;
