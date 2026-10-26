@@ -54,6 +54,28 @@ async function getPricing(options = {}) {
     }
 }
 
+// เกณฑ์ของแต่ละขนาด (น้ำหนัก, ผลรวม กว้าง+ยาว+สูง) อ่านจากไฟล์ข้อมูลที่ติดมากับแพ็กเกจ
+const SIZE_INFO = Object.freeze(getBundled().sizes);
+
+/**
+ * หาว่าพัสดุน้ำหนัก `weightKg` และผลรวม กว้าง+ยาว+สูง `dimensionSumCm` เข้าขนาดไหน
+ * ถ้าอย่างใดอย่างหนึ่งเกินเกณฑ์ของขนาดนั้น จะขยับไปขนาดถัดไป
+ */
+function sizeOf(weightKg, dimensionSumCm = 0) {
+    for (const [name, value] of [['weightKg', weightKg], ['dimensionSumCm', dimensionSumCm]]) {
+        if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) {
+            throw new TypeError(`${name} ต้องเป็นตัวเลขที่ไม่ติดลบ (ได้ ${value})`);
+        }
+    }
+    for (const size of SIZES) {
+        const info = SIZE_INFO[size];
+        const fitsWeight = info.maxWeightKg === null || weightKg <= info.maxWeightKg;
+        const fitsDimensions = info.maxDimensionSumCm === null || dimensionSumCm <= info.maxDimensionSumCm;
+        if (fitsWeight && fitsDimensions) return size;
+    }
+    return SIZES[SIZES.length - 1];
+}
+
 function normalizeSize(size) {
     const key = String(size || '').trim().toUpperCase();
     if (!SIZES.includes(key)) {
@@ -117,5 +139,7 @@ module.exports.getPricing = getPricing;
 module.exports.quote = quote;
 module.exports.find = find;
 module.exports.getBundled = getBundled;
+module.exports.sizeOf = sizeOf;
 module.exports.SIZES = SIZES;
+module.exports.SIZE_INFO = SIZE_INFO;
 module.exports.DEFAULT_URL = DEFAULT_URL;
