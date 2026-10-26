@@ -10,11 +10,19 @@ Examples:
   thai-shipping-pricing            ราคาทุกบริษัท ทุกขนาด
   thai-shipping-pricing M          บริษัทที่ส่งขนาด M ได้ เรียงจากถูกไปแพง
   thai-shipping-pricing M --remote รวมค่าบริการพื้นที่ห่างไกล
+  thai-shipping-pricing -w 3 -d 70 หนัก 3 กก. กว้าง+ยาว+สูง 70 ซม.
   thai-shipping-pricing --find flash
 
-Sizes: ${shipping.SIZES.join(', ')}
+Sizes:
+${shipping.SIZES.map(size => {
+    const info = shipping.SIZE_INFO[size];
+    const limit = info.maxWeightKg === null ? 'ใหญ่กว่า XL' : `ไม่เกิน ${info.maxWeightKg} กก. และ ${info.maxDimensionSumCm} ซม.`;
+    return `  ${size.padEnd(4)} ${limit}`;
+}).join('\n')}
 
 Options:
+  -w, --weight <kg>  น้ำหนักพัสดุ (กก.) ใช้แทนการระบุขนาด
+  -d, --dim <cm>     ผลรวม กว้าง+ยาว+สูง (ซม.) ใช้คู่กับ --weight
   -f, --find <name>  แสดงข้อมูลของบริษัทเดียว
   -r, --remote       รวมค่าบริการพื้นที่ห่างไกล
   -o, --offline      ใช้ข้อมูลที่แนบมากับแพ็กเกจ ไม่ดึงข้อมูลสด
@@ -34,6 +42,8 @@ async function main() {
             allowPositionals: true,
             options: {
                 find: { type: 'string', short: 'f' },
+                weight: { type: 'string', short: 'w' },
+                dim: { type: 'string', short: 'd' },
                 remote: { type: 'boolean', short: 'r' },
                 offline: { type: 'boolean', short: 'o' },
                 json: { type: 'boolean', short: 'j' },
@@ -49,9 +59,21 @@ async function main() {
         console.log(HELP);
         return 0;
     }
-    if (positionals.length > 1) {
+    if (positionals.length > 1 || (values.dim !== undefined && values.weight === undefined)) {
         console.error(HELP);
         return 2;
+    }
+    if (values.weight !== undefined) {
+        if (positionals.length) {
+            console.error('ใส่ขนาดหรือ --weight อย่างใดอย่างหนึ่ง');
+            return 2;
+        }
+        try {
+            positionals.push(shipping.sizeOf(Number(values.weight), Number(values.dim || 0)));
+        } catch (err) {
+            console.error('--weight และ --dim ต้องเป็นตัวเลขที่ไม่ติดลบ');
+            return 2;
+        }
     }
 
     const data = await shipping.getPricing({ offline: values.offline });
@@ -90,7 +112,8 @@ async function main() {
             console.log(JSON.stringify(quotes, null, 2));
             return 0;
         }
-        console.log(`ขนาด ${quotes.length ? quotes[0].size : positionals[0]}${values.remote ? ' (พื้นที่ห่างไกล)' : ''}\n`);
+        const size = quotes.length ? quotes[0].size : positionals[0].toUpperCase();
+        console.log(`ขนาด ${size}: ${shipping.SIZE_INFO[size].description}${values.remote ? ' (พื้นที่ห่างไกล)' : ''}\n`);
         for (const q of quotes) {
             const text = q.total === null ? (q.priceText || 'ตามจริง') : `${q.total} บาท`;
             console.log(`  ${text.padEnd(24)} ${q.name}`);

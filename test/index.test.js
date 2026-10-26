@@ -117,6 +117,19 @@ test('quote rejects unknown sizes', async () => {
     await assert.rejects(shipping.quote('XS', { data: DATA }), TypeError);
 });
 
+test('sizeOf picks the smallest size that fits both weight and dimensions', () => {
+    assert.equal(shipping.sizeOf(0.5), 'S');
+    assert.equal(shipping.sizeOf(2, 60), 'S');
+    assert.equal(shipping.sizeOf(1, 61), 'M');
+    assert.equal(shipping.sizeOf(8, 50), 'M');
+    assert.equal(shipping.sizeOf(15), 'L');
+    assert.equal(shipping.sizeOf(30, 150), 'XL');
+    assert.equal(shipping.sizeOf(60), 'XXL');
+    assert.equal(shipping.sizeOf(1, 200), 'XXL');
+    assert.throws(() => shipping.sizeOf(-1), TypeError);
+    assert.throws(() => shipping.sizeOf('3'), TypeError);
+});
+
 test('find matches names case-insensitively and by part of the name', async () => {
     assert.equal((await shipping.find('cheap', { data: DATA })).name, 'Cheap Express');
     assert.equal((await shipping.find('EXPENSIVE CO', { data: DATA })).name, 'Expensive Co');
@@ -128,6 +141,15 @@ test('find matches names case-insensitively and by part of the name', async () =
 for (const file of ['courier_pricing.json', 'courier_pricing_fallback.json']) {
     test(`data/${file} is well-formed`, () => {
         const data = require(`../data/${file}`);
+        let lastWeight = 0;
+        for (const size of shipping.SIZES) {
+            const info = data.sizes[size];
+            assert.ok(info && info.description, `ไม่มีเกณฑ์ของขนาด ${size}`);
+            if (size !== 'XXL') {
+                assert.ok(info.maxWeightKg > lastWeight, `น้ำหนักของ ${size} ต้องมากกว่าขนาดก่อนหน้า`);
+                lastWeight = info.maxWeightKg;
+            }
+        }
         const names = new Set();
         for (const c of data.couriers) {
             assert.ok(!names.has(c.name), `ชื่อซ้ำ: ${c.name}`);

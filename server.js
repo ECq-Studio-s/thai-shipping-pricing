@@ -80,6 +80,7 @@ function formatPricingResponse(data) {
         success: true,
         lastUpdated: data.lastUpdated || null,
         note: data.note || null,
+        sizes: data.sizes || null,
         couriers: couriers
     };
 }
