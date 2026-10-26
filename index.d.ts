@@ -23,10 +23,20 @@ declare namespace getPricing {
         lastFetched: string | null;
     }
 
+    interface SizeInfo {
+        /** น้ำหนักสูงสุด (กก.) หรือ null = ไม่จำกัด */
+        maxWeightKg: number | null;
+        /** ผลรวม กว้าง+ยาว+สูง สูงสุด (ซม.) หรือ null = ไม่จำกัด */
+        maxDimensionSumCm: number | null;
+        description: string;
+    }
+
     interface PricingData {
         /** ISO 8601 */
         lastUpdated: string;
         note?: string;
+        sizeNote?: string;
+        sizes?: SizeMap<SizeInfo>;
         couriers: Courier[];
         /** true = ข้อมูลสดจาก GitHub, false = ข้อมูลที่แนบมากับแพ็กเกจ */
         live: boolean;
@@ -69,8 +79,11 @@ declare namespace getPricing {
     function quote(size: Size | Lowercase<Size>, options?: QuoteOptions): Promise<Quote[]>;
     function find(name: string, options?: Options): Promise<Courier | null>;
     function getBundled(): PricingData;
+    /** หาขนาดจากน้ำหนัก (กก.) และผลรวม กว้าง+ยาว+สูง (ซม.) */
+    function sizeOf(weightKg: number, dimensionSumCm?: number): Size;
 
     const SIZES: readonly Size[];
+    const SIZE_INFO: Readonly<SizeMap<SizeInfo>>;
     const DEFAULT_URL: string;
 }
 
