@@ -283,7 +283,22 @@ function handleRequest(req, res) {
     // Static files (fallback)
     // ==========================================
     // ถ้าไม่ตรง route ไหน ให้ลอง serve static file
-    let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
+    let decodedPath;
+    try {
+        decodedPath = decodeURIComponent(pathname);
+    } catch (e) {
+        sendJSON(res, 400, { error: 'Bad Request' });
+        return;
+    }
+    const requestedPath = decodedPath === '/' ? '/index.html' : decodedPath;
+    const filePath = path.resolve(__dirname, '.' + path.posix.normalize('/' + requestedPath));
+    const relativePath = path.relative(__dirname, filePath);
+    // กัน path traversal (../) และไม่เปิดเผยไฟล์ซ่อน เช่น .git, .env
+    if (relativePath.startsWith('..') || path.isAbsolute(relativePath) ||
+        relativePath.split(path.sep).some(part => part.startsWith('.'))) {
+        sendJSON(res, 404, { error: 'Not Found' });
+        return;
+    }
     serveStaticFile(res, filePath);
 }
 
@@ -309,4 +324,4 @@ server.listen(PORT, HOST, () => {
         console.log('⚠️ ไม่พบไฟล์ข้อมูลราคาใดๆ');
     }
     console.log('============================================');
-});
+});

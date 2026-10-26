@@ -22,7 +22,7 @@
       "remoteSurcharge": { "S": 50, "M": 50, "L": 100, "XL": 200, "XXL": null },
       "supported": { "S": true, "M": true, "L": true, "XL": true, "XXL": false },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky บนหน้าเว็บ flashxpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
+      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky บนหน้าเว็บ flashexpress.co.th — อัปเดตล่าสุดเมื่อ 14 ก.ค. 2569 (ระบบดึงข้อมูลอัตโนมัติ)",
       "source": "https://www.flashexpress.co.th/rate",
       "fetchStatus": "pending",
       "lastFetched": null
