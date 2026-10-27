@@ -1,13 +1,33 @@
 {
-  "lastUpdated": "2026-10-26T15:23:40.089Z",
+  "lastUpdated": "2026-10-27T04:26:57.989Z",
   "note": "ราคาและขนาดเป็นค่าประมาณ อาจไม่ตรงกับราคาจริง 100% ควรเช็กกับบริษัทขนส่งก่อนส่งของ",
   "sizeNote": "ขนาดดูจากน้ำหนักและผลรวม กว้าง+ยาว+สูง ถ้าอย่างใดอย่างหนึ่งเกินให้ขยับไปขนาดถัดไป เกณฑ์นี้เป็นค่ากลางที่ได้จากการเทียบเกณฑ์ของ KEX, Flash, J&T, SPX และกล่องไปรษณีย์ไทย",
   "sizes": {
-    "S": {"maxWeightKg": 2, "maxDimensionSumCm": 60, "description": "ซองหรือกล่องเล็ก ประมาณกล่องไปรษณีย์เบอร์ A ถึง C"},
-    "M": {"maxWeightKg": 10, "maxDimensionSumCm": 90, "description": "กล่องขนาดกลาง ประมาณกล่องไปรษณีย์เบอร์ D ถึง F"},
-    "L": {"maxWeightKg": 20, "maxDimensionSumCm": 120, "description": "กล่องใหญ่ที่ยังส่งเป็นพัสดุปกติได้"},
-    "XL": {"maxWeightKg": 50, "maxDimensionSumCm": 180, "description": "ของหนักหรือกล่องใหญ่มาก บางเจ้าต้องใช้บริการพัสดุใหญ่ (Bulky)"},
-    "XXL": {"maxWeightKg": null, "maxDimensionSumCm": null, "description": "หนักเกิน 50 กก. หรือใหญ่เกิน 180 ซม. ต้องใช้บริการของชิ้นใหญ่หรือเรียกรถ"}
+    "S": {
+      "maxWeightKg": 2,
+      "maxDimensionSumCm": 60,
+      "description": "ซองหรือกล่องเล็ก ประมาณกล่องไปรษณีย์เบอร์ A ถึง C"
+    },
+    "M": {
+      "maxWeightKg": 10,
+      "maxDimensionSumCm": 90,
+      "description": "กล่องขนาดกลาง ประมาณกล่องไปรษณีย์เบอร์ D ถึง F"
+    },
+    "L": {
+      "maxWeightKg": 20,
+      "maxDimensionSumCm": 120,
+      "description": "กล่องใหญ่ที่ยังส่งเป็นพัสดุปกติได้"
+    },
+    "XL": {
+      "maxWeightKg": 50,
+      "maxDimensionSumCm": 180,
+      "description": "ของหนักหรือกล่องใหญ่มาก บางเจ้าต้องใช้บริการพัสดุใหญ่ (Bulky)"
+    },
+    "XXL": {
+      "maxWeightKg": null,
+      "maxDimensionSumCm": null,
+      "description": "หนักเกิน 50 กก. หรือใหญ่เกิน 180 ซม. ต้องใช้บริการของชิ้นใหญ่หรือเรียกรถ"
+    }
   },
   "couriers": [
     {
@@ -35,10 +55,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost (เช็กเว็บ thailandpost.co.th ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากประกาศอัตราค่าบริการไปรษณีย์ด่วนพิเศษ (EMS) และ Logispost (เช็กเว็บ thailandpost.co.th ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.thailandpost.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:22:42.546Z"
+      "lastFetched": "2026-10-27T04:26:08.721Z"
     },
     {
       "name": "Flash Express & Flash Bulky",
@@ -66,10 +86,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการทั่วไปและ Flash Bulky (เช็กเว็บ flashexpress.co.th ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "⚠️ เปิดเว็บ https://www.flashexpress.co.th/rate ไม่ได้ (27 ตุลาคม 2569 เวลา 11:26) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
       "source": "https://www.flashexpress.co.th/rate",
-      "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:22:46.750Z"
+      "fetchStatus": "failed",
+      "lastFetched": "2026-10-27T04:26:23.071Z"
     },
     {
       "name": "J&T Express & J&T Bulky",
@@ -97,10 +117,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express (เช็กเว็บ jtexpress.co.th ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการสำหรับผู้ประกอบการรายย่อย J&T Express (เช็กเว็บ jtexpress.co.th ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.jtexpress.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:22:47.506Z"
+      "lastFetched": "2026-10-27T04:26:23.854Z"
     },
     {
       "name": "KEX (Kerry Express)",
@@ -128,10 +148,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "⚠️ เปิดเว็บ https://th.kex-express.com/th/ ไม่ได้ (26 ตุลาคม 2569 เวลา 22:23) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
+      "reference": "ข้อมูลจากตารางราคากลางพัสดุด่วน KEX Express (เช็กเว็บ kex-express.com ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://th.kex-express.com/th/",
-      "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:17.533Z"
+      "fetchStatus": "success",
+      "lastFetched": "2026-10-27T04:26:24.280Z"
     },
     {
       "name": "NIM Express",
@@ -221,10 +241,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "⚠️ เปิดเว็บ https://www.dhl.com/th-th/home.html ไม่ได้ (26 ตุลาคม 2569 เวลา 22:23) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
+      "reference": "⚠️ เปิดเว็บ https://www.dhl.com/th-th/home.html ไม่ได้ (27 ตุลาคม 2569 เวลา 11:26) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
       "source": "https://www.dhl.com/th-th/home.html",
       "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:18.199Z"
+      "lastFetched": "2026-10-27T04:26:44.290Z"
     },
     {
       "name": "Best Express",
@@ -252,10 +272,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "⚠️ เปิดเว็บ https://www.bestexpress.co.th/rate ไม่ได้ (26 ตุลาคม 2569 เวลา 22:23) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
+      "reference": "⚠️ เปิดเว็บ https://www.bestexpress.co.th/rate ไม่ได้ (27 ตุลาคม 2569 เวลา 11:26) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
       "source": "https://www.bestexpress.co.th/rate",
       "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:21.637Z"
+      "lastFetched": "2026-10-27T04:26:44.855Z"
     },
     {
       "name": "Ninja Van",
@@ -283,10 +303,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ เปิดเว็บ https://www.ninjavan.co/th-th ไม่ได้ (26 ตุลาคม 2569 เวลา 22:23) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
+      "reference": "ข้อมูลจากเรทราคากลางผู้ขายออนไลน์ทั่วไป Ninja Van ประเทศไทย (เช็กเว็บ ninjavan.co ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.ninjavan.co/th-th",
-      "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:22.159Z"
+      "fetchStatus": "success",
+      "lastFetched": "2026-10-27T04:26:45.440Z"
     },
     {
       "name": "บริการรถเหมาลำ On-Demand",
@@ -347,10 +367,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่พิเศษ",
-      "reference": "⚠️ เปิดเว็บ https://www.grab.com/th/express/rate ไม่ได้ (26 ตุลาคม 2569 เวลา 22:23) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
+      "reference": "⚠️ เปิดเว็บ https://www.grab.com/th/express/rate ไม่ได้ (27 ตุลาคม 2569 เวลา 11:26) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
       "source": "https://www.grab.com/th/express/rate",
       "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:23.943Z"
+      "lastFetched": "2026-10-27T04:26:45.539Z"
     },
     {
       "name": "LINEMAN Delivery",
@@ -378,10 +398,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "ข้อมูลจากอัตราค่าบริการ LINEMAN MAN Delivery (เช็กเว็บ lineman.line.me ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "⚠️ เปิดเว็บ https://lineman.line.me/ ไม่ได้ (27 ตุลาคม 2569 เวลา 11:26) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
       "source": "https://lineman.line.me/",
-      "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:26.324Z"
+      "fetchStatus": "failed",
+      "lastFetched": "2026-10-27T04:26:46.558Z"
     },
     {
       "name": "Shopee Xpress (SPX)",
@@ -408,10 +428,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ Shopee Xpress (SPX) (เช็กเว็บ spx.co.th ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Shopee Xpress (SPX) (เช็กเว็บ spx.co.th ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://spx.co.th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:27.296Z"
+      "lastFetched": "2026-10-27T04:26:47.568Z"
     },
     {
       "name": "Lazada Logistics (LEX)",
@@ -438,10 +458,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ Lazada Logistics (LEX) (เช็กเว็บ lazada.co.th ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Lazada Logistics (LEX) (เช็กเว็บ lazada.co.th ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.lazada.co.th/logistics/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:30.989Z"
+      "lastFetched": "2026-10-27T04:26:50.271Z"
     },
     {
       "name": "Deliveree",
@@ -471,10 +491,10 @@
       "unsupportedReason": "ไม่รองรับขนาดเล็ก",
       "customPriceText": "เริ่มต้นประมาณ 300 บาท",
       "customWarning": "คิดราคาจริงตามประเภทรถและระยะทาง",
-      "reference": "ข้อมูลจากอัตราค่าบริการ Deliveree (เช็กเว็บ deliveree.com ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Deliveree (เช็กเว็บ deliveree.com ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.deliveree.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:35.175Z"
+      "lastFetched": "2026-10-27T04:26:53.612Z"
     },
     {
       "name": "Lalamove",
@@ -502,10 +522,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับน้ำหนักเกิน 50 กก.",
-      "reference": "ข้อมูลจากอัตราค่าบริการ Lalamove (เช็กเว็บ lalamove.com ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Lalamove (เช็กเว็บ lalamove.com ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.lalamove.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:36.502Z"
+      "lastFetched": "2026-10-27T04:26:55.018Z"
     },
     {
       "name": "FedEx Thailand",
@@ -532,10 +552,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ FedEx Express ในประเทศ (เช็กเว็บ fedex.com ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ FedEx Express ในประเทศ (เช็กเว็บ fedex.com ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.fedex.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:36.754Z"
+      "lastFetched": "2026-10-27T04:26:55.326Z"
     },
     {
       "name": "CJ Logistics",
@@ -562,10 +582,10 @@
         "XL": true,
         "XXL": true
       },
-      "reference": "ข้อมูลจากอัตราค่าบริการ CJ Logistics ประเทศไทย (เช็กเว็บ cjlogistics.com ล่าสุด 26 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
+      "reference": "ข้อมูลจากอัตราค่าบริการ CJ Logistics ประเทศไทย (เช็กเว็บ cjlogistics.com ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.cjlogistics.com/th/rate",
       "fetchStatus": "success",
-      "lastFetched": "2026-10-26T15:23:39.289Z"
+      "lastFetched": "2026-10-27T04:26:56.851Z"
     },
     {
       "name": "Skootar",
@@ -593,10 +613,10 @@
         "XXL": false
       },
       "unsupportedReason": "ไม่รองรับขนาดใหญ่",
-      "reference": "⚠️ เปิดเว็บ https://www.skootar.com/ ไม่ได้ (26 ตุลาคม 2569 เวลา 22:23) ราคาที่แสดงเป็นข้อมูลที่บันทึกไว้ล่าสุด",
+      "reference": "ข้อมูลจากอัตราค่าบริการ Skootar (เช็กเว็บ skootar.com ล่าสุด 27 ตุลาคม 2569, ราคาเป็นข้อมูลที่ผู้ดูแลกรอกไว้)",
       "source": "https://www.skootar.com/",
-      "fetchStatus": "failed",
-      "lastFetched": "2026-10-26T15:23:40.089Z"
+      "fetchStatus": "success",
+      "lastFetched": "2026-10-27T04:26:57.989Z"
     }
   ]
 }
